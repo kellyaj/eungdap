@@ -10,3 +10,13 @@
     ".txt"        "Content-Type: text/plain"
          )
        extension))
+
+(defn add-response [code]
+  (str "HTTP/1.1 "
+       (cond
+         (= code 200) "200 OK"
+         (= code 404) "404 Not Found"
+         :else "500 Internal Server Error")))
+
+(defn craft-header [code extension]
+  (apply str [(add-response code) "\r\n" (choose-mime-type extension) "\r\n"]))
