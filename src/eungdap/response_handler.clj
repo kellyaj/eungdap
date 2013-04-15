@@ -12,7 +12,7 @@
     (= code 404)
       (str
         (craft-header code (get-file-extension request))
-        "<h1> Not Found </h1>")
+        "\r\n<h1> Not Found </h1>")
     :else
       (str
         (craft-header code (get-file-extension request))
@@ -20,6 +20,6 @@
 
 (defn choose-response [request validity]
   (if (= true validity)
-    (add-header-and-body 200 request)
-    (add-header-and-body 404 request)))
+    (println (add-header-and-body 200 request))
+    (println (add-header-and-body 404 request))))
 

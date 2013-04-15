@@ -13,6 +13,10 @@
   (it "splits a PUT route properly"
     (should= "PUT /form"
       (request-splitter "PUT /form HTTP/1.1")))
+
+  (it "splits another GET route properly"
+    (should= "GET /penguins"
+      (request-splitter "GET /penguins HTTP/1.1")))
   )
 
 (describe "request handling"

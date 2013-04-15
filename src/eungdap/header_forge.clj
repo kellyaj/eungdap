@@ -22,5 +22,5 @@
   (apply str [
               (add-response code) "\r\n" 
               (choose-mime-type extension) "\r\n"
-              "Server: Eungdap 0.1" "\r\n"
+              "Server: Eungdap 0.1" "\r\n\r\n"
               ]))
