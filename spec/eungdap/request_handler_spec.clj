@@ -18,7 +18,7 @@
 (describe "request handling"
   (it "gets a 200 OK from the response handler"
     (with-in-str "200 OK"
-      (request-handler "GET / HTTP/1.1")))
+      (request-handler "GET /pretzels HTTP/1.1")))
 
   (it "gets a 404 Not Found from the response handler"
     (with-in-str "404 Not Found"

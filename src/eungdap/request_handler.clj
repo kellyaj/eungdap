@@ -1,12 +1,10 @@
 (ns eungdap.request-handler
-  (:require [eungdap.headers :refer :all]
-            [eungdap.route-manager :refer :all]))
-
+  (:require [eungdap.route-manager :refer :all]
+            [eungdap.response-handler :refer :all]))
 
 (defn request-splitter [request]
  ((clojure.string/split request #" HTTP") 0))
 
 (defn request-handler [request]
-  (if (route-manager (request-splitter request))
-    (two-hundred)
-    (four-zero-four)))
+  (choose-response
+    (request-splitter request) (route-manager (request-splitter request))))
