@@ -5,23 +5,34 @@
 
 (describe "response handler"
   (it "properly responds with a 200 OK"
-    (contains? "200 OK"
-      (choose-response true "GET /")))
+    (should= "200 OK"
+      (re-find #"200 OK" (choose-response "GET /" true))))
 
   (it "properly responds with a 404 Not Found"
-    (contains? "404 Not Found"
-      (choose-response false "GET /penguins")))
+    (should= "404 Not Found"
+      (re-find #"404 Not Found" (choose-response "GET /penguins" false))))
 
   (it "properly combines a 200 OK header with a requested route body"
-    (contains? "making me thirsty"
-      (add-header-and-body "GET /pretzels")))
-
-  (it "successfully integrates header-and-body for an html file"
-    (contains? "making me thirsty"
-      (choose-response "GET /pretzels" true)))
+    (should= "making me thirsty"
+      (re-find #"making me thirsty" (choose-response "GET /pretzels" true))))
 
   (it "sucessfully responds to /"
-    (contains? "ex nihilo facto"
-      (choose-response true "GET /")))
+    (should= "ex nihilo"
+      (re-find #"ex nihilo" (choose-response "GET /" true))))
 
 )
+
+(describe "file extension"
+  (it "properly identifies .html"
+    (should= "html"
+      (get-file-extension "GET /penguins.html")))
+
+  (it "properly identifies a non-filetyped request"
+    (should= "html"
+      (get-file-extension "GET /penguins")))
+
+  (it "properly identifies a .png"
+    (should= "png"
+      (get-file-extension "GET /penguins.png")))
+
+  )
