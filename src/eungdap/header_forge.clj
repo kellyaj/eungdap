@@ -20,7 +20,7 @@
 
 (defn craft-header [code extension]
   (apply str [
-              (add-response code) "\r\n" 
+              (add-response code) "\r\n"
               (choose-mime-type extension) "\r\n"
               "Server: Eungdap 0.1" "\r\n\r\n"
               ]))
