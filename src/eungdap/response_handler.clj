@@ -16,7 +16,7 @@
     :else
       (str
         (craft-header code (get-file-extension request))
-        (get-html (get-file-name request)))))
+        (get-file-data (get-file-name request (get-file-extension request))))))
 
 (defn choose-response [request validity]
   (if (= true validity)
