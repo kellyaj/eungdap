@@ -9,11 +9,11 @@
 
   (it "converts a route to an html file name"
     (should= "pretzels.html"
-      (get-file-name "GET /pretzels" "html")))
+      (get-file-name "GET /pretzels.html")))
 
   (it "gets ./public for /"
-    (should= "./public/"
-      (get-file-name "GET /" "html")))
+    (should= "public/"
+      (get-file-name "GET /")))
 
   (it "properly creates a vector of file names"
     (should= true
@@ -31,5 +31,12 @@
     (should= "text-file.txt"
       (re-find #"text-file.txt" (generate-directory-html "./public"))))
 
+  (it "properly slurps pretzels"
+    (should= "making me thirsty"
+      (re-find #"making me thirsty" (get-file-data "pretzels.html"))))
+
+  (it "properly slurps pretzels from a non suffixed route"
+    (should= "making me thirsty"
+      (re-find #"making me thirsty" (get-file-data "pretzels"))))
 
   )

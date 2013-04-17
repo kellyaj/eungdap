@@ -9,4 +9,6 @@
                "POST /form"
                "GET /text-file.txt"
                "GET /file1"
+               "GET /public/pretzels.html"
+               "GET /public/index.html"
                "GET /image.png"} requested-route))

@@ -27,7 +27,7 @@
       (get-file-extension "GET /penguins.html")))
 
   (it "properly identifies a non-filetyped request"
-    (should= "html"
+    (should= nil
       (get-file-extension "GET /penguins")))
 
   (it "properly identifies a .png"

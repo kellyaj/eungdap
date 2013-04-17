@@ -1,12 +1,10 @@
 (ns eungdap.filemanager
   (:import java.io.File))
 
-(defn get-file-name [request extension]
-  (if (= "GET /" request)
-    "./public/"
-    (if (= extension (re-find (re-pattern extension) request))
-      (str (peek (clojure.string/split request #"/")))
-      (str (peek (clojure.string/split request #"/")) (str "." extension)))))
+(defn get-file-name [request]
+  (if (= request "GET /")
+      "public/"
+      (str (peek (clojure.string/split request #"/")))))
 
 (defn make-file-href [file-path file]
   (str "<a href=\"" file-path "/" file "\">"  file "</a><br>"))
@@ -31,4 +29,6 @@
 (defn get-file-data [file]
   (if (= true (-> (-> file java.io.File. .getPath) java.io.File. .isDirectory))
     (generate-directory-html file)
-    (slurp (str "public/" file))))
+    (if (= "html" (re-find #"html" file))
+      (slurp (str "./public/" file))
+      (slurp (str "./public/" file "." "html")))))

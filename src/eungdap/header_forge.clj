@@ -8,6 +8,7 @@
     "jpeg"       "Content-Type: image/jpeg"
     "gif"        "Content-Type: image/gif"
     "txt"        "Content-Type: text/plain"
+    nil          "Content-Type: text/html"
          )
        extension))
 
