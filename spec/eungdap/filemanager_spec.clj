@@ -11,8 +11,8 @@
     (should= "pretzels.html"
       (get-file-name "GET /pretzels" "html")))
 
-  (it "gets index.html for /"
-    (should= "index.html"
+  (it "gets ./public for /"
+    (should= "./public/"
       (get-file-name "GET /" "html")))
 
   (it "properly creates a vector of file names"

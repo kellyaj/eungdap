@@ -16,8 +16,8 @@
       (re-find #"making me thirsty" (add-header-and-body 200 "GET /pretzels"))))
 
   (it "sucessfully responds to /"
-    (should= "ex nihilo"
-      (re-find #"ex nihilo" (add-header-and-body 200 "GET /"))))
+    (should= "text-file.txt"
+      (re-find #"text-file.txt" (add-header-and-body 200 "GET /"))))
 
 )
 
