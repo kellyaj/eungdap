@@ -17,11 +17,10 @@
       (str
         (craft-header code (get-file-extension request))
         (get-file-data (get-file-name request (get-file-extension request))))))
-; change choose-response to check for "GET /"
-; if so, have it tell filemanager to handle a directory display
+
 (defn choose-response [request validity]
     (if (= "GET /" request)
-      (println (craft-header 200 ("this is where display-directory goes")))
+      (println (add-header-and-body 200 request))
       (if (= true validity)
         (println (add-header-and-body 200 request))
         (println (add-header-and-body 404 request)))))
