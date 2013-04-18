@@ -29,6 +29,6 @@
 (defn get-file-data [file]
   (if (= true (-> (-> file java.io.File. .getPath) java.io.File. .isDirectory))
     (generate-directory-html file)
-    (if (= "html" (re-find #"html" file))
-      (slurp (str "./public/" file))
-      (slurp (str "./public/" file "." "html")))))
+    (if (contains? (create-file-list "./public") file)
+      (slurp (str "./public/"  (get (create-file-list "./public") file)))
+      (slurp (str "./public/" file ".html")))))

@@ -11,4 +11,5 @@
                "GET /file1"
                "GET /public/pretzels.html"
                "GET /public/index.html"
+               "GET /public"
                "GET /image.png"} requested-route))
