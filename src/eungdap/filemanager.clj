@@ -3,11 +3,11 @@
 
 (defn get-file-name [request]
   (if (= request "GET /")
-      "public/"
+      "./public"
       (str (peek (clojure.string/split request #"/")))))
 
 (defn make-file-href [file-path file]
-  (str "<a href=\"" file-path "/" file "\">"  file "</a><br>"))
+  (str "<a href=\"/" file "\">" file "</a><br>"))
 
 (defn stringify-path [directory-name]
   (-> directory-name java.io.File. .getPath))
