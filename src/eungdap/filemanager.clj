@@ -9,14 +9,13 @@
 (defn make-file-href [file-path file]
   (str "<a href=\"/" file "\">" file "</a><br>"))
 
-(defn stringify-path [directory-name]
-  (-> directory-name java.io.File. .getAbsolutePath))
+(defn stringify-path [file-or-directory]
+  (-> file-or-directory java.io.File. .getAbsolutePath))
 
 (defn create-file-list [directory-name]
-  (let [x #{}]
-    (into x
+    (into #{}
           (for [file (-> directory-name java.io.File. .listFiles)]
-            (.getName file)))))
+            (.getName file))))
 
 (defn generate-directory-html [directory-name]
   (apply str "<h1> Index of " directory-name "</h1>"
@@ -26,9 +25,17 @@
        (for [file (create-file-list directory-name)]
         (make-file-href (stringify-path directory-name) file))))))
 
-(defn get-file-data [file]
-  (if (= true (-> (-> file java.io.File. .getAbsolutePath) java.io.File. .isDirectory))
-    (generate-directory-html file)
-    (if (contains? (create-file-list "./public") file)
-      (slurp (str "./public/"  (get (create-file-list "./public") file)))
-      (slurp (str "./public/" file ".html")))))
+(defn get-file-data [file file-extension]
+  (cond
+    (= true (-> (stringify-path file) java.io.File. .isDirectory))
+      (generate-directory-html file)
+    (contains? #{"png" "gif" "jpeg" "jpg"} file-extension)
+      ;(-> "public/image.gif" java.io.ByteArrayInputStream. .read)
+       "images not yet supported"
+    (contains? (create-file-list "public") file)
+       (slurp (str "public/" (get (create-file-list "./public") file)))
+    (contains? (create-file-list "public") file)
+       (slurp (str "public/" file ".html"))))
+
+
+;FileInputStream to get byte array after reading file 
