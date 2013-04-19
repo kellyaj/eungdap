@@ -12,7 +12,7 @@
       (get-file-name "GET /pretzels.html")))
 
   (it "gets ./public for /"
-    (should= "public/"
+    (should= "public"
       (get-file-name "GET /")))
 
   (it "properly creates a vector of file names"
@@ -24,7 +24,7 @@
       (re-find #"text-file.txt" (make-file-href "./public" "text-file.txt"))))
 
   (it "gets the correct path for a directory"
-    (should= "./public"
+    (should= "/Users/andrewkelly/learning/sandbox/server/eungdap/./public"
       (stringify-path "./public")))
 
   (it "properly makes a directory list"
