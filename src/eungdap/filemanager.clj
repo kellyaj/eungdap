@@ -20,22 +20,20 @@
 (defn generate-directory-html [directory-name]
   (apply str "<h1> Index of " directory-name "</h1>"
        "<hr>"
-       (let [x []]
-       (into x
+       (into []
        (for [file (create-file-list directory-name)]
-        (make-file-href (stringify-path directory-name) file))))))
+        (make-file-href (stringify-path directory-name) file)))))
+
+(defn convert-file-to-byte-array [file]
+  (byte-array (-> (-> "public/image.gif" java.io.File. .getAbsoluteFile) java.io.FileInputStream. .read)))
 
 (defn get-file-data [file file-extension]
   (cond
     (= true (-> (stringify-path file) java.io.File. .isDirectory))
       (generate-directory-html file)
-    (contains? #{"png" "gif" "jpeg" "jpg"} file-extension)
-      ;(-> "public/image.gif" java.io.ByteArrayInputStream. .read)
-       "images not yet supported"
+   (contains? #{"png" "gif" "jpeg" "jpg"} file-extension)
+      (-> (convert-file-to-byte-array file) java.io.ByteArrayInputStream. .read)
     (contains? (create-file-list "public") file)
        (slurp (str "public/" (get (create-file-list "./public") file)))
-    (contains? (create-file-list "public") file)
+    :else
        (slurp (str "public/" file ".html"))))
-
-
-;FileInputStream to get byte array after reading file 

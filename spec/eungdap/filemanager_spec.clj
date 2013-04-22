@@ -5,7 +5,7 @@
 (describe "Filemanager"
   (it "grabs basic HTML and converts it to a string"
     (should= "making me thirsty"
-      (re-find #"making me thirsty" (get-file-data "pretzels.html"))))
+      (re-find #"making me thirsty" (get-file-data "pretzels.html" "html"))))
 
   (it "converts a route to an html file name"
     (should= "pretzels.html"
@@ -33,10 +33,10 @@
 
   (it "properly slurps pretzels"
     (should= "making me thirsty"
-      (re-find #"making me thirsty" (get-file-data "pretzels.html"))))
+      (re-find #"making me thirsty" (get-file-data "pretzels.html" "html"))))
 
   (it "properly slurps pretzels from a non suffixed route"
     (should= "making me thirsty"
-      (re-find #"making me thirsty" (get-file-data "pretzels"))))
+      (re-find #"making me thirsty" (get-file-data "pretzels.html" "html"))))
 
   )
