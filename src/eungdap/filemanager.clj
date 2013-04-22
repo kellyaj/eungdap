@@ -25,7 +25,9 @@
         (make-file-href (stringify-path directory-name) file)))))
 
 (defn convert-file-to-byte-array [file]
-  (byte-array (-> (-> "public/image.gif" java.io.File. .getAbsoluteFile) java.io.FileInputStream. .read)))
+  (byte-array 
+    (->
+      (-> "public/image.gif" java.io.FileInputStream. .read))))
 
 (defn get-file-data [file file-extension]
   (cond

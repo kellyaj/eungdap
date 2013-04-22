@@ -2,11 +2,11 @@
   (:use server.socket
         eungdap.request-handler))
 
-(import '[java.io OutputStreamWriter BufferedReader InputStreamReader])
+(import '[java.io BufferedOutputStream BufferedReader InputStreamReader])
 
 (defn start-server [in out]
   (binding [*in* (BufferedReader. (InputStreamReader. in))
-            *out* (OutputStreamWriter. out)]
+            *out* (BufferedOutputStream. out)]
         (request-handler (read-line))
         (flush)))
 
