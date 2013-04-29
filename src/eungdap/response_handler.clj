@@ -9,19 +9,26 @@
         (peek (clojure.string/split request #"\."))
         "html"))))
 
-(defn add-header-and-body [code request]
+(defn add-header [code request]
   (cond
     (= code 404)
       (str
-        (craft-header code (get-file-extension request))
-        "\r\n<h1> Not Found </h1>")
+        (craft-header code nil))
     :else
       (str
-        (craft-header code (get-file-extension request))
-        (get-file-data (get-file-name request) (get-file-extension request)))))
+        (craft-header code (get-file-extension request)))))
+
+(defn add-body [request]
+  (get-file-data (get-file-name request) (get-file-extension request)))
+
+(defn handle-valid-url [request]
+  (clojure.java.io/copy (add-body request) *out*))
+
+(defn handle-invalid-url []
+  (clojure.java.io/copy (.getBytes (add-header 404 nil)) *out*)
+  (clojure.java.io/copy (get-file-data 404 nil) *out*))
 
 (defn choose-response [request validity]
-    (if (= true validity)
-      (println (add-header-and-body 200 request))
-      (println (add-header-and-body 404 request))))
-
+   (if (= true validity)
+     (handle-valid-url request)
+     (handle-invalid-url)))

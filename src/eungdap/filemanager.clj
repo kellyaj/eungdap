@@ -1,5 +1,9 @@
 (ns eungdap.filemanager
-  (:import java.io.File))
+  (:import java.io.File java.nio.file.Paths))
+
+(import '[java.nio.file])
+(import '[java.nio.File.Paths])
+(import '[java.io PrintWriter])
 
 (defn get-file-name [request]
   (if (= request "GET /")
@@ -24,18 +28,15 @@
        (for [file (create-file-list directory-name)]
         (make-file-href (stringify-path directory-name) file)))))
 
-(defn convert-file-to-byte-array [file]
-  (byte-array 
-    (->
-      (-> "public/image.gif" java.io.FileInputStream. .read))))
-
 (defn get-file-data [file file-extension]
   (cond
+    (= 404 file)
+      (.getBytes (slurp "./public/404.html"))
     (= true (-> (stringify-path file) java.io.File. .isDirectory))
       (generate-directory-html file)
    (contains? #{"png" "gif" "jpeg" "jpg"} file-extension)
-      (-> (convert-file-to-byte-array file) java.io.ByteArrayInputStream. .read)
+      (java.nio.file.Files/readAllBytes (Paths/get (.toURI (-> (str "public/" file) java.io.File. .getAbsoluteFile))))
     (contains? (create-file-list "public") file)
-       (slurp (str "public/" (get (create-file-list "./public") file)))
+       (.getBytes (slurp (str "public/" (get (create-file-list "./public") file))))
     :else
-       (slurp (str "public/" file ".html"))))
+       (.getBytes (slurp (str "public/" file ".html")))))
