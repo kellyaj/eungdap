@@ -31,12 +31,12 @@
 (defn get-file-data [file file-extension]
   (cond
     (= 404 file)
-      (.getBytes (slurp "./public/404.html"))
+      (slurp "./public/404.html")
     (= true (-> (stringify-path file) java.io.File. .isDirectory))
       (generate-directory-html file)
    (contains? #{"png" "gif" "jpeg" "jpg"} file-extension)
       (java.nio.file.Files/readAllBytes (Paths/get (.toURI (-> (str "public/" file) java.io.File. .getAbsoluteFile))))
     (contains? (create-file-list "public") file)
-       (.getBytes (slurp (str "public/" (get (create-file-list "./public") file))))
+       (slurp (str "public/" (get (create-file-list "./public") file)))
     :else
-       (.getBytes (slurp (str "public/" file ".html")))))
+       (slurp (str "public/" file ".html"))))
