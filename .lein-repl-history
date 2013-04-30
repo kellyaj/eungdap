@@ -114,3 +114,15 @@
 (println (-> "./public/image.gif" java.io.FileInputStream. .read))
 (let [ba (.getBytes "abc")] (apply str (map char ba)))
 (clojure.string/join "" (map char (concat (.getBytes "Hello") (.getBytes "World!"))))
+(defn get-file-extension [request]                                                    |  8 (defn get-file-name [request]
+  8   (if (not= 1 (count (clojure.string/split request #"\.")))                           |  9   (if (= request "GET /")
+  9     (if (not= true (-> (peek (clojure.string/split request #"\.")) java.io.File. .isDi| 10       "public"
+    rectory))                                                                             | 11       (str (peek (clojure.string/split request
+ 10       (if (= "." (re-find #"\." request))                                             |     #"/")))))
+ 11         (peek (clojure.string/split request #"\."))                                   | 12 
+ 12         "none"))))
+(= 1 0)
+(= true (= 1 0))
+(= true (= 1 0) (= 1 1)))
+(= true (= 1 0) (= 1 1))
+(= true (= 1 1) (= 1 1))
