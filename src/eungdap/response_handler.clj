@@ -36,6 +36,8 @@
   (cond
     (contains? #{"jpg" "png" "jpeg" "gif"} file-extension)
       (concat-byte-array code request file file-extension)
+    (= nil file-extension)
+      (new String (concat-byte-array code request file ""))
     (= true (= nil file-extension) (= false (-> file java.io.File. .isDirectory)))
       (new String (concat-byte-array code request (str file ".html") "html"))
     :else

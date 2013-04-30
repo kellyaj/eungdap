@@ -126,3 +126,5 @@
 (= true (= 1 0) (= 1 1)))
 (= true (= 1 0) (= 1 1))
 (= true (= 1 1) (= 1 1))
+(-> "./public/index.html" java.io.File. .isFile)
+(-> "./public/file1" java.io.File. .isFile)
