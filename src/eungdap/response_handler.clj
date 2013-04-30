@@ -2,7 +2,7 @@
   (:require [eungdap.header-forge :refer :all]
             [eungdap.filemanager :refer :all]))
 
-(import '[java.io OutputStreamWriter])
+(import '[java.io OutputStreamWriter ByteArrayOutputStream])
 
 (defn get-file-extension [request]
   (if (not= 1 (count (clojure.string/split request #"\.")))
@@ -20,21 +20,22 @@
       (str
         (craft-header code (get-file-extension request)))))
 
-(defn add-body [request]
+(defn add-body [request code file file-extension]
   (get-file-data (get-file-name request) (get-file-extension request)))
 
-(defn handle-valid-url [request]
-  (cond
-    (contains? #{"jpg" "jpeg" "png" "gif"} (get-file-extension request))
-      (clojure.java.io/copy (add-body request) *out*)
-    :else
-      (binding [*out* (OutputStreamWriter. *out*)]
-        (println (str (add-header 200 request) (get-file-data (get-file-name request) (get-file-extension request)))))))
+(defn make-binary-response [request code file file-extension]
+  (byte-array
+    (concat
+      (.getBytes (add-header code request))
+      (get-file-data file file-extension))))
 
+(defn handle-valid-url [request]
+  (clojure.java.io/copy (make-binary-response request 200 (get-file-name request) (get-file-extension request)) *out*))
 
 (defn handle-invalid-url []
-  (binding [*out* (OutputStreamWriter. *out*)]
-    (println (str (add-header 404 nil) (get-file-data 404 nil)))))
+  (clojure.java.io/copy (make-binary-response 404) *out*))
+ ; (clojure.java.io/copy (add-header 404 nil) *out*)
+ ; (clojure.java.io/copy (get-file-data 404 nil) *out*))
 
 (defn choose-response [request validity]
    (if (= true validity)
