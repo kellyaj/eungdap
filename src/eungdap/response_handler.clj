@@ -20,7 +20,7 @@
       (str
         (craft-header code (get-file-extension request)))))
 
-(defn add-body [request code file file-extension]
+(defn add-body [request]
   (get-file-data (get-file-name request) (get-file-extension request)))
 
 (defn make-binary-response [request code file file-extension]
@@ -29,13 +29,28 @@
       (.getBytes (add-header code request))
       (get-file-data file file-extension))))
 
+(defn respond-with-image [request]
+  (binding [*out* (OutputStreamWriter. *out*)]
+    (println (str add-header 200 request)))
+    (clojure.java.io/copy (add-body request) *out*))
+
 (defn handle-valid-url [request]
-  (clojure.java.io/copy (make-binary-response request 200 (get-file-name request) (get-file-extension request)) *out*))
+  (cond
+    (contains? #{"jpg" "jpeg" "gif" "png"} (get-file-extension request))
+      (respond-with-image request)
+    :else
+      (binding [*out* (OutputStreamWriter. *out*)]
+        (println
+          (str
+            (add-header 200 request)
+            (get-file-data (get-file-name request) (get-file-extension request)))))))
 
 (defn handle-invalid-url []
-  (clojure.java.io/copy (make-binary-response 404) *out*))
- ; (clojure.java.io/copy (add-header 404 nil) *out*)
- ; (clojure.java.io/copy (get-file-data 404 nil) *out*))
+  (binding [*out* (OutputStreamWriter. *out*)]
+    (println
+      (str
+        (add-header 404 nil)
+        (get-file-data 404 nil)))))
 
 (defn choose-response [request validity]
    (if (= true validity)

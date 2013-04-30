@@ -22,17 +22,21 @@
             (.getName file))))
 
 (defn generate-directory-html [directory-name]
-  (.getBytes (apply str "<h1> Index of " directory-name "</h1>"
+  (apply str "<h1> Index of " directory-name "</h1>"
        "<hr>"
        (into []
        (for [file (create-file-list directory-name)]
-        (make-file-href (stringify-path directory-name) file))))))
+        (make-file-href (stringify-path directory-name) file)))))
 
 (defn get-file-data [file file-extension]
   (cond
     (= 404 file)
-      (java.nio.file.Files/readAllBytes (Paths/get (.toURI (-> (str "public/404.html") java.io.File. .getAbsoluteFile))))
+      (slurp "./public/404.html")
     (= true (-> (stringify-path file) java.io.File. .isDirectory))
       (generate-directory-html file)
+    (contains? #{"jpg" "jpeg" "gif" "png"} file-extension)
+      (java.nio.file.Files/readAllBytes (Paths/get (.toURI (-> (str "public/" file) java.io.File. .getAbsoluteFile))))
+    (contains? (create-file-list "public") file)
+      (slurp (str "public/" (get (create-file-list "./public") file)))
     :else
-      (java.nio.file.Files/readAllBytes (Paths/get (.toURI (-> (str "public/" file) java.io.File. .getAbsoluteFile))))))
+      (slurp (str "public/" file ".html"))))
