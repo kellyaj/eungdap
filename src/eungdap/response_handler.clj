@@ -23,21 +23,30 @@
 (defn add-body [request code file file-extension]
   (get-file-data (get-file-name request) (get-file-extension request)))
 
-(defn make-binary-response [request code file file-extension]
+(defn concat-byte-array [code request file file-extension]
   (byte-array
     (concat
       (.getBytes (add-header code request))
-      (get-file-data file file-extension))))
+      (get-file-data (get-file-name file) file-extension))))
+
+(defn make-binary-response [request code file file-extension]
+  (cond
+    (contains? #{"jpg" "png" "jpeg" "gif"} file-extension)
+      (concat-byte-array code request file file-extension)
+    :else
+      (new String (concat-byte-array code request file file-extension))))
 
 (defn handle-valid-url [request]
   (clojure.java.io/copy (make-binary-response request 200 (get-file-name request) (get-file-extension request)) *out*))
 
-(defn handle-invalid-url []
-  (clojure.java.io/copy (make-binary-response 404) *out*))
- ; (clojure.java.io/copy (add-header 404 nil) *out*)
- ; (clojure.java.io/copy (get-file-data 404 nil) *out*))
+(defn handle-invalid-url [request]
+  (clojure.java.io/copy (make-binary-response request 404 "404.html" "html") *out*))
+
+(defn print-dat [request]
+  (binding [*out* (OutputStreamWriter. *out*)]
+    (println request)))
 
 (defn choose-response [request validity]
    (if (= true validity)
      (handle-valid-url request)
-     (handle-invalid-url)))
+     (handle-invalid-url request)))

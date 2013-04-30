@@ -111,3 +111,6 @@
 (byte-array (.getBytes "abc"))
 (byte-array (+ (.getBytes "edf") (.getBytes "abc")))
 (byte-array (concat (.getBytes "edf") (.getBytes "abc")))
+(println (-> "./public/image.gif" java.io.FileInputStream. .read))
+(let [ba (.getBytes "abc")] (apply str (map char ba)))
+(clojure.string/join "" (map char (concat (.getBytes "Hello") (.getBytes "World!"))))
