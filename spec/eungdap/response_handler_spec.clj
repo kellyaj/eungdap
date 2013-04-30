@@ -2,25 +2,6 @@
   (:require [speclj.core :refer :all]
             [eungdap.response-handler :refer :all]))
 
-(describe "response handler"
-  (it "properly responds with a 200 OK"
-    (should= "200 OK"
-      (re-find #"200 OK" (add-header-and-body 200 "GET /"))))
-
-  (it "properly responds with a 404 Not Found"
-    (should= "404 Not Found"
-      (re-find #"404 Not Found" (add-header-and-body 404 "GET /penguins"))))
-
-  (it "properly combines a 200 OK header with a requested route body"
-    (should= "making me thirsty"
-      (re-find #"making me thirsty" (add-header-and-body 200 "GET /pretzels"))))
-
-  (it "sucessfully responds to /"
-    (should= "text-file.txt"
-      (re-find #"text-file.txt" (add-header-and-body 200 "GET /"))))
-
-)
-
 (describe "file extension"
   (it "properly identifies .html"
     (should= "html"
@@ -35,3 +16,42 @@
       (get-file-extension "GET /penguins.png")))
 
   )
+
+(describe "add-header"
+  (it "creates a 404 properly"
+    (should= "Not Found"
+      (re-find #"Not Found" (add-header 404 "GET /penguins"))))
+
+  (it "creates a 200 properly"
+    (should= "200 OK"
+      (re-find #"200 OK" (add-header 200 "GET /index.html"))))
+  )
+
+(describe "concat-byte-array"
+  (it "properly retrieves a byte array for a supported HTML file"
+    (should= (.getClass (.getBytes "abc"))
+      (.getClass
+        (concat-byte-array 200 "GET /index.html" "index.html" "html"))))
+
+  (it "properly retrieves a byte array for a supported image file"
+    (should= (.getClass (.getBytes "abc"))
+      (.getClass
+        (concat-byte-array 200 "GET /image.gif" "image.gif" "gif"))))
+
+  (it "properly adds a header for a supported HTML file"
+    (should= "200 OK"
+      (re-find #"200 OK"
+        (new String (concat-byte-array 200 "GET /index.html" "index.html" "html")))))
+
+  (it "properly gets the content of a supported HTML file"
+    (should= "making me thirsty"
+      (re-find #"making me thirsty"
+        (new String (concat-byte-array 200 "GET /pretzels.html" "pretzels.html" "html")))))
+
+  (it "properly adds a header for a supported image file"
+    (should= "200 OK"
+      (re-find #"200 OK"
+        (new String (concat-byte-array 200 "GET /image.png" "image.png" "png")))))
+
+  )
+

@@ -20,8 +20,6 @@
       (str
         (craft-header code (get-file-extension request)))))
 
-(defn add-body [request code file file-extension]
-  (get-file-data (get-file-name request) (get-file-extension request)))
 
 (defn concat-byte-array [code request file file-extension]
   (byte-array
@@ -34,7 +32,7 @@
     (contains? #{"jpg" "png" "jpeg" "gif"} file-extension)
       (concat-byte-array code request file file-extension)
     (= true (= nil file-extension) (= false (-> file java.io.File. .isDirectory)))
-      (new String (concat-byte-array code request (str file ".html") "html")) 
+      (new String (concat-byte-array code request (str file ".html") "html"))
     :else
       (new String (concat-byte-array code request file file-extension))))
 
@@ -43,10 +41,6 @@
 
 (defn handle-invalid-url [request]
   (clojure.java.io/copy (make-binary-response request 404 "404.html" "html") *out*))
-
-(defn print-dat [request]
-  (binding [*out* (OutputStreamWriter. *out*)]
-    (println request)))
 
 (defn choose-response [request validity]
    (if (= true validity)

@@ -5,7 +5,7 @@
 (describe "Filemanager"
   (it "grabs basic HTML and converts it to a string"
     (should= "making me thirsty"
-      (re-find #"making me thirsty" (get-file-data "pretzels.html" "html"))))
+      (re-find #"making me thirsty" (new String (get-file-data "pretzels.html" "html")))))
 
   (it "converts a route to an html file name"
     (should= "pretzels.html"
@@ -29,14 +29,14 @@
 
   (it "properly makes a directory list"
     (should= "text-file.txt"
-      (re-find #"text-file.txt" (generate-directory-html "./public"))))
+      (re-find #"text-file.txt" (new String (generate-directory-html "./public")))))
 
   (it "properly slurps pretzels"
     (should= "making me thirsty"
-      (re-find #"making me thirsty" (get-file-data "pretzels.html" "html"))))
+      (re-find #"making me thirsty" (new String (get-file-data "pretzels.html" "html")))))
 
   (it "properly slurps pretzels from a non suffixed route"
     (should= "making me thirsty"
-      (re-find #"making me thirsty" (get-file-data "pretzels.html" "html"))))
+      (re-find #"making me thirsty" (new String (get-file-data "pretzels.html" "html")))))
 
   )
