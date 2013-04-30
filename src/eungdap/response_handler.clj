@@ -5,11 +5,16 @@
 (import '[java.io OutputStreamWriter ByteArrayOutputStream])
 
 (defn get-file-extension [request]
-  (if (not= 1 (count (clojure.string/split request #"\.")))
-    (if (not= true (-> (peek (clojure.string/split request #"\.")) java.io.File. .isDirectory))
-      (if (= "." (re-find #"\." request))
-        (peek (clojure.string/split request #"\."))
-        "html"))))
+  (cond
+    (= true (-> (peek (clojure.string/split request #"\.")) java.io.File. .isDirectory))
+      "directory"
+    (= "." (re-find #"\." request))
+      (peek (clojure.string/split request #"\."))
+    (not= 1 (count (clojure.string/split request #"\.")))
+      "html"
+    :else
+       nil))
+
 
 (defn add-header [code request]
   (cond
