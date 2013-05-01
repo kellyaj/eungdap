@@ -39,4 +39,12 @@
     (should= "making me thirsty"
       (re-find #"making me thirsty" (new String (get-file-data "pretzels.html" "html")))))
 
+  (it "properly deals with a non-extension that should be .html"
+    (should= "fake form"
+      (re-find #"fake form" (new String (deal-with-no-extension "/form")))))
+
+  (it "properly deals with a non-extension that should be just plain file"
+    (should="file1 contents"
+      (re-find #"file1 contents" (new String (deal-with-no-extension "/file1")))))
+
   )

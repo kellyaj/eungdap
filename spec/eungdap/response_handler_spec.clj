@@ -15,7 +15,9 @@
     (should= "png"
       (get-file-extension "GET /penguins.png")))
 
-  )
+  (it "properly identifies a directory"
+    (should= "directory"
+      (get-file-extension "/"))))
 
 (describe "add-header"
   (it "creates a 404 properly"
@@ -24,8 +26,7 @@
 
   (it "creates a 200 properly"
     (should= "200 OK"
-      (re-find #"200 OK" (add-header 200 "GET /index.html"))))
-  )
+      (re-find #"200 OK" (add-header 200 "GET /index.html")))))
 
 (describe "concat-byte-array"
   (it "properly retrieves a byte array for a supported HTML file"

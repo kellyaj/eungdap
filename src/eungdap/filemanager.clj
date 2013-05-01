@@ -3,7 +3,6 @@
 
 (import '[java.nio.file])
 (import '[java.nio.File.Paths])
-(import '[java.io PrintWriter])
 
 (defn get-file-name [request]
   (if (= request "GET /")
@@ -28,11 +27,18 @@
        (for [file (create-file-list directory-name)]
         (make-file-href (stringify-path directory-name) file))))))
 
+(defn deal-with-no-extension [file]
+  (if (.isFile (-> (str "public/" file) java.io.File. .getAbsoluteFile))
+    (java.nio.file.Files/readAllBytes (Paths/get (.toURI (-> (str "public/" file) java.io.File. .getAbsoluteFile))))
+    (java.nio.file.Files/readAllBytes (Paths/get (.toURI (-> (str "public/" file ".html") java.io.File. .getAbsoluteFile))))))
+
 (defn get-file-data [file file-extension]
   (cond
     (= 404 file)
       (java.nio.file.Files/readAllBytes (Paths/get (.toURI (-> (str "public/404.html") java.io.File. .getAbsoluteFile))))
     (= true (-> (stringify-path file) java.io.File. .isDirectory))
       (generate-directory-html file)
+    (= nil file-extension)
+    (deal-with-no-extension file)
     :else
       (java.nio.file.Files/readAllBytes (Paths/get (.toURI (-> (str "public/" file) java.io.File. .getAbsoluteFile))))))

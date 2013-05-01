@@ -4,6 +4,7 @@
   (contains? #{
                "GET /"
                "GET /form"
+               "GET /form.html"
                "GET /pretzels"
                "PUT /form"
                "POST /form"
