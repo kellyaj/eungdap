@@ -19,3 +19,12 @@
       (request-splitter "GET /penguins HTTP/1.1")))
   )
 
+(describe "get-http-method"
+  (it "returns GET for GET /index.html"
+    (should= "GET"
+      (get-http-method "GET /index.html")))
+
+  (it "returns POST for POST /form.html"
+    (should= "POST"
+      (get-http-method "POST /index.html"))))
+

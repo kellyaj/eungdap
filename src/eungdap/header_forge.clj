@@ -16,6 +16,8 @@
   (str "HTTP/1.1 "
        (cond
          (= code 200) "200 OK"
+         (= code 206) "206 Partial Content"
+         (= code 301) "301 Moved Permanently"
          (= code 404) "404 Not Found"
          :else "500 Internal Server Error")))
 

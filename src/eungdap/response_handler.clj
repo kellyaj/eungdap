@@ -43,7 +43,7 @@
     (= true (= nil file-extension) (= false (-> file java.io.File. .isDirectory)))
       (new String (concat-byte-array code request (str file ".html") "html"))
     :else
-      (new String (concat-byte-array code request file file-extension))))
+      (str (new String (concat-byte-array code request file file-extension)))))
 
 (defn handle-valid-url [request]
   (clojure.java.io/copy (make-binary-response request 200 (get-file-name request) (get-file-extension request)) *out*))
@@ -51,7 +51,22 @@
 (defn handle-invalid-url [request]
   (clojure.java.io/copy (make-binary-response request 404 "404.html" "html") *out*))
 
-(defn choose-response [request validity]
-   (if (= true validity)
-     (handle-valid-url request)
-     (handle-invalid-url request)))
+(defn handle-get [request]
+    (handle-valid-url request))
+
+(defn handle-post [request]
+  )
+
+(defn handle-put [request]
+  )
+
+(defn choose-response [request validity http-method]
+  (if (= true validity)
+    (cond
+      (= http-method "GET")
+        (handle-get request)
+      (= http-method "POST")
+        (handle-post request)
+      (= http-method "PUT")
+         (handle-put request))
+  (handle-invalid-url request)))

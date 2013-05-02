@@ -2,6 +2,7 @@
 
 (defn route-manager [requested-route]
   (contains? #{
+               "GET /redirect"
                "GET /"
                "GET /form"
                "GET /form.html"
