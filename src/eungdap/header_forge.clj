@@ -21,9 +21,11 @@
          (= code 404) "404 Not Found"
          :else "500 Internal Server Error")))
 
-(defn craft-header [code extension]
+(defn craft-header [code extension content-length]
   (apply str [
               (add-response code) "\r\n"
+              "Content-Length: " content-length "\r\n"
               (choose-mime-type extension) "\r\n"
-              "Server: Eungdap 0.1" "\r\n\r\n"
+              "Server: Eungdap 0.1"
+              "\r\n\r\n"
               ]))

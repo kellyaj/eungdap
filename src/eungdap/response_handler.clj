@@ -18,20 +18,24 @@
        nil))
 
 
-(defn add-header [code request]
+(defn add-header [code request content-length]
   (cond
     (= code 404)
       (str
-        (craft-header code nil))
+        (craft-header code nil content-length))
     :else
       (str
-        (craft-header code (get-file-extension request)))))
+        (craft-header code (get-file-extension request) content-length))))
 
+(defn get-content-length [file file-extension]
+  (if (= file-extension "directory")
+    "directory"
+    (alength (get-file-data (get-file-name file) file-extension))))
 
 (defn concat-byte-array [code request file file-extension]
   (byte-array
     (concat
-      (.getBytes (add-header code request))
+      (.getBytes (add-header code request (get-content-length file file-extension)))
       (get-file-data (get-file-name file) file-extension))))
 
 (defn make-binary-response [request code file file-extension]
@@ -46,16 +50,19 @@
       (str (new String (concat-byte-array code request file file-extension)))))
 
 (defn handle-valid-url [request]
-  (clojure.java.io/copy (make-binary-response request 200 (get-file-name request) (get-file-extension request)) *out*))
+  (clojure.java.io/copy
+    (make-binary-response request 200 (get-file-name request) (get-file-extension request)) *out*))
 
 (defn handle-invalid-url [request]
-  (clojure.java.io/copy (make-binary-response request 404 "404.html" "html") *out*))
+  (clojure.java.io/copy
+    (make-binary-response request 404 "404.html" "html") *out*))
 
 (defn handle-get [request]
     (handle-valid-url request))
 
 (defn handle-post [request]
-  )
+  (clojure.java.io/copy
+    (str (make-binary-response request 200 (get-file-name request) (get-file-extension request)) "data = cosby") *out*))
 
 (defn handle-put [request]
   )

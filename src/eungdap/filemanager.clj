@@ -32,6 +32,10 @@
     (java.nio.file.Files/readAllBytes (Paths/get (.toURI (-> (str "public/" file) java.io.File. .getAbsoluteFile))))
     (java.nio.file.Files/readAllBytes (Paths/get (.toURI (-> (str "public/" file ".html") java.io.File. .getAbsoluteFile))))))
 
+(defn get-file-size [file]
+  (java.nio.file.Files/size
+    (Paths/get (.toURI (-> (str "public/" file) java.io.File. .getAbsoluteFile)))))
+
 (defn get-file-data [file file-extension]
   (cond
     (= 404 file)
