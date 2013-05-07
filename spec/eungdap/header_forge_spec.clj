@@ -36,12 +36,12 @@
   )
 
 (describe "crafting the response"
-  (it "properls crafts a 200"
-    (should= "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nServer: Eungdap 0.1\r\n\r\n"
-      (craft-header 200 "html")))
+  (it "properly crafts a 200"
+    (should= "HTTP/1.1 200 OK\r\nContent-Length: 123\r\nContent-Type: text/html\r\nServer: Eungdap 0.1\r\n\r\n"
+      (craft-header 200 "html" 123)))
 
   (it "properly crafts a 404"
-    (should= "HTTP/1.1 404 Not Found\r\nContent-Type: text/html\r\nServer: Eungdap 0.1\r\n\r\n"
-      (craft-header 404 "html")))
+    (should= "HTTP/1.1 404 Not Found\r\nContent-Length: 123\r\nContent-Type: text/html\r\nServer: Eungdap 0.1\r\n\r\n"
+      (craft-header 404 "html" 123)))
 
   )

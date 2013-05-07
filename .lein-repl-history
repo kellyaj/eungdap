@@ -161,3 +161,118 @@
 (byte-array (map byte [1 2 3]))
 (byte-array (map byte "abc"))
 (byte-array (map byte ["a" "b" "c"]))
+(atom 49)
+@
+r
+(def a (atom 49))
+a
+@a
+(+ @a 1)
+@a
+(swap! a 4)
+(swap! a (+ a 1))
+(swap! a inc)
+@a
+a
+(reset! a 111)
+a
+@a
+(swap! a inc)
+(reset! a "ff"
+)
+a
+)
+(def apple-price (atom 1))
+apple-price
+@apple-price
+(!swap @apple-price 2)
+(!swap apple-price 2)
+(swap! apple-price inc)
+(def my-name (atom "joe"))
+@my-name
+(swap! my-name "sam")
+my-name
+@my-name
+(defn change-name [name] (def my-name (atom name)))
+@my-name
+(change-name "sam")
+@my-name
+my-name
+@my-name
+(def @guest (atom "billy"))
+(def guest (atom "billy"))
+@guest
+guest
+(swap! guest "timmy")
+(reset! guest "timmy")
+guest
+@guest
+(defn post-data [data-name input] (def data-name (atom input)))
+(post-data "test" "works?")
+data-name
+test
+(post-data "qwert" "zxcv")
+data-name
+(post-data qwert "zxcv")
+{"test" "qwert"}
+"test"
+"gggg
+"
+(hash-map "test" "qwert" "bob" "jam")
+"test'
+"
+(def my-map (hash-map "test" "qwert" "bob" "jam"))
+my-map
+(get my-map "test")
+(def other-map {})
+(assoc other-map "bob" "jam")
+other-map
+(other-map)
+(merge other-map "bob" "jam")
+other-map
+(defn add-other-map [key value] (let [new-map {}] (assoc other-map key value)))
+(add-other-map "bob" "tom")
+new-map
+(add-other-map "qweeee" "tttzzcvv")
+(def my-map (atom {"test" "qwerty"}))
+mypmap
+my-map
+(get my-map "test")
+(my-map
+)
+my-map
+(get my-map)
+(get "test" my-map)
+my-map
+@my-map
+(get "test" @my-map)
+(get @my-map "test")
+(swap! @my-map "name" "joey")
+(swap! @my-map conj "name" "joey")
+(swap! my-map conj "name" "joey")
+@my-map
+(conj @my-map "yep" "do")
+(merge @my-map {"frank" "enstein"})
+@my-map
+(reset! my-map (merge @my-map {"frank" "enstein"}))
+@my-map
+(find @my-map "enstein")
+(find @my-map "frank")
+(get @my-map "frank")
+(get @my-map "enstein")
+(key @my-map "enstein")
+(map key @my-map "enstein")
+(map key @my-map)
+@my-map
+(get @my-map "test")
+(assoc @my-map "test" "zippy")
+(dissoc @my-map "test")
+@my-map
+(swap! my-map dissoc "test")
+@my-map
+(get @my-map "frank")
+@my-map
+(reset! my-map (merge @my-map (hash-map "yupp" "yupp")))
+(reset! my-map (merge my-map (hash-map "yupp" "yupp")))
+(reset! my-map (merge @my-map (hash-map "yupp" "yupp")))
+(reset! my-map (merge @my-map (hash-map "yupp" "yupg")))

@@ -61,9 +61,7 @@
     (handle-valid-url request))
 
 (defn handle-post [request]
-  (clojure.java.io/copy
-    (str (make-binary-response request 200 (get-file-name request) (get-file-extension request)) "data = cosby") *out*))
-
+)
 (defn handle-put [request]
   )
 

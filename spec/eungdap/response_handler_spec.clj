@@ -22,11 +22,11 @@
 (describe "add-header"
   (it "creates a 404 properly"
     (should= "Not Found"
-      (re-find #"Not Found" (add-header 404 "GET /penguins"))))
+      (re-find #"Not Found" (add-header 404 "GET /penguins" 123))))
 
   (it "creates a 200 properly"
     (should= "200 OK"
-      (re-find #"200 OK" (add-header 200 "GET /index.html")))))
+      (re-find #"200 OK" (add-header 200 "GET /index.html" 123)))))
 
 (describe "concat-byte-array"
   (it "properly retrieves a byte array for a supported HTML file"
