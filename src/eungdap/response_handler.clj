@@ -1,6 +1,7 @@
 (ns eungdap.response-handler
   (:require [eungdap.header-forge :refer :all]
-            [eungdap.filemanager :refer :all]))
+            [eungdap.filemanager :refer :all]
+            [eungdap.store :refer :all]))
 
 (import '[java.io OutputStreamWriter ByteArrayOutputStream])
 
@@ -61,7 +62,10 @@
     (handle-valid-url request))
 
 (defn handle-post [request]
-)
+  (binding [*out* (OutputStreamWriter. *out*)]
+    (println request)))
+
+
 (defn handle-put [request]
   )
 
