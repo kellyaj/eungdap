@@ -1,5 +1,5 @@
 (ns eungdap.request-handler-spec
-  (:require [speclj.core :refer :all]
+  (:require [speclj.core :refer [describe it should=]]
             [eungdap.request-handler :refer :all]))
 (describe "request-splitter"
   (it "splits a GET route properly"

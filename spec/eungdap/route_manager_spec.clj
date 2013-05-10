@@ -1,13 +1,13 @@
 (ns eungdap.route-manager-spec
-  (:require [speclj.core :refer :all]
-            [eungdap.route-manager :refer :all]))
+  (:require [speclj.core :refer [describe it should=]]
+            [eungdap.route-manager :refer [check-route-validity]]))
 
 (describe "route-manager"
   (it "returns true for a known route"
     (should= true
-      (route-manager "GET /")))
+      (check-route-validity "/")))
 
   (it "returns false if the route is not known"
     (should= false
-      (route-manager "GET /penguins")))
+      (check-route-validity "/penguins")))
 )

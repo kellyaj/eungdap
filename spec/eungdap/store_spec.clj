@@ -1,5 +1,5 @@
 (ns eungdap.store-spec
-  (:require [speclj.core :refer :all]
+  (:require [speclj.core :refer [describe it should=]]
             [eungdap.store :refer :all]))
 
 (describe "store"

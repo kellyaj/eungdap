@@ -1,5 +1,5 @@
 (ns eungdap.header-forge-spec
-  (:require [speclj.core :refer :all]
+  (:require [speclj.core :refer [describe it should=]]
             [eungdap.header-forge :refer :all]))
 
 (describe "content type selection"

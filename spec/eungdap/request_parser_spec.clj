@@ -13,10 +13,23 @@
       (with-in-str "GET /test HTTP/1.1"
       (get (split-main-request) :http-method))))
 
-  (it "properly identifdies the route"
+  (it "properly identifies the route"
     (should= "/form"
       (with-in-str "GET /form HTTP/1.1"
         (get (split-main-request) :route))))
+
+  (it "properly identifies the file extension"
+    (should= "png"
+      (identify-file-extension "/cosby.png")))
+
+  (it "defaults to html for un-extensioned routes"
+    (should= "html"
+      (identify-file-extension "/home")))
+
+  (it "adds the file extension to the map"
+    (should= "png"
+      (with-in-str "GET /cosby.png"
+        (get (split-main-request) :extension))))
 
   (it "creates a hash-map for a response"
     (should= map?

@@ -1,5 +1,5 @@
 (ns eungdap.filemanager-spec
-  (:require [speclj.core :refer :all]
+  (:require [speclj.core :refer [describe it should=]]
             [eungdap.filemanager :refer :all]))
 
 (describe "Filemanager"

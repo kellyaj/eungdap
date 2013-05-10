@@ -2,19 +2,17 @@
 
 (defn check-route-validity [requested-route]
   (contains? #{
-               "GET /redirect"
-               "GET /"
-               "GET /form"
-               "GET /form.html"
-               "GET /pretzels"
-               "PUT /form"
-               "POST /form"
-               "GET /text-file.txt"
-               "GET /file1"
-               "GET /file2"
-               "GET /pretzels.html"
-               "GET /index.html"
-               "GET /public"
-               "GET /image.jpeg"
-               "GET /image.gif"
-               "GET /image.png"} requested-route))
+               "/redirect"
+               "/"
+               "/form"
+               "/form.html"
+               "/pretzels"
+               "/text-file.txt"
+               "/file1"
+               "/file2"
+               "/pretzels.html"
+               "/index.html"
+               "/public"
+               "/image.jpeg"
+               "/image.gif"
+               "/image.png"} requested-route))

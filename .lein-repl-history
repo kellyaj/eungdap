@@ -291,3 +291,8 @@ my-map
 (hash-map :test (first (clojure.string/split "GET /pretzels HTTP/1.1" #"\ ")))
 (hash-map :test (first (clojure.string/split "GET /pretzels HTTP/1.1" #"\ ")) :test1 (last (clojure.string/split "GET /pretzels HTTP/1.1" #"\ ")))
 (hash-map :test (first (clojure.string/split "GET /pretzels HTTP/1.1" #"\ ")) :test1 (last (clojure.string/split "GET /pretzels HTTP/1.1" #"\ ")) :test2 (nth (clojure.string/split "GET /pretzels HTTP/1.1" #"\ ") 1))
+(clojure.string/split "/pretzels.html" #"\.")
+(clojure.string/split "/pretzels" #"\.")
+(count (clojure.string/split "/pretzels" #"\."))
+(last (clojure.string/split "/pretzels.html" #"\."))
+fg

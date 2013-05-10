@@ -1,9 +1,13 @@
 (ns eungdap.response-handler
   (:require [eungdap.header-forge :refer [choose-mime-type add-response craft-header]]
-            [eungdap.filemanager :refer [get-file-data]]
+            [eungdap.filemanager :refer [get-file-data get-file-name]]
             [eungdap.store :refer :all]))
 
 (import '[java.io OutputStreamWriter ByteArrayOutputStream])
+
+(defn print-the [thing]
+  (binding [*out* (OutputStreamWriter. *out*)]
+    (println thing)))
 
 (defn get-file-extension [request]
   (cond
@@ -59,7 +63,7 @@
     (make-binary-response request 404 "404.html" "html") *out*))
 
 (defn handle-get [request]
-    (handle-valid-url request))
+    (handle-valid-url (get request :route)))
 
 (defn handle-post [request]
   (binding [*out* (OutputStreamWriter. *out*)]
