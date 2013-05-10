@@ -1,6 +1,6 @@
 (ns eungdap.route-manager)
 
-(defn route-manager [requested-route]
+(defn check-route-validity [requested-route]
   (contains? #{
                "GET /redirect"
                "GET /"
