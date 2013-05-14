@@ -5,7 +5,7 @@
 (import '[java.nio.File.Paths])
 
 (defn get-file-name [request]
-  (if (= request "GET /")
+  (if (= request "/")
       "public"
       (str (peek (clojure.string/split request #"/")))))
 

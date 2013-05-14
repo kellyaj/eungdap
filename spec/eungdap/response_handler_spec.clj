@@ -2,23 +2,6 @@
   (:require [speclj.core :refer [describe it should=]]
             [eungdap.response-handler :refer :all]))
 
-(describe "file extension"
-  (it "properly identifies .html"
-    (should= "html"
-      (get-file-extension "GET /penguins.html")))
-
-  (it "properly identifies a non-filetyped request"
-    (should= nil
-      (get-file-extension "GET /penguins")))
-
-  (it "properly identifies a .png"
-    (should= "png"
-      (get-file-extension "GET /penguins.png")))
-
-  (it "properly identifies a directory"
-    (should= "directory"
-      (get-file-extension "/"))))
-
 (describe "add-header"
   (it "creates a 404 properly"
     (should= "Not Found"

@@ -9,20 +9,6 @@
   (binding [*out* (OutputStreamWriter. *out*)]
     (println thing)))
 
-(defn get-file-extension [request]
-  (cond
-    (= true (-> (peek (clojure.string/split request #"\.")) java.io.File. .isDirectory))
-      "directory"
-    (= "." (re-find #"\." request))
-      (peek (clojure.string/split request #"\."))
-    (not= 1 (count (clojure.string/split request #"\.")))
-      "nil"
-    (not= "." (re-find #"\." request))
-      nil
-    :else
-       nil))
-
-
 (defn add-header [code request content-length]
   (cond
     (= code 404)
@@ -30,7 +16,7 @@
         (craft-header code nil content-length))
     :else
       (str
-        (craft-header code (get-file-extension request) content-length))))
+        (craft-header code (get request :extension) content-length))))
 
 (defn get-content-length [file file-extension]
   (if (= file-extension "directory")
@@ -56,14 +42,14 @@
 
 (defn handle-valid-url [request]
   (clojure.java.io/copy
-    (make-binary-response request 200 (get-file-name request) (get-file-extension request)) *out*))
+    (make-binary-response request 200 (get-file-name (get request :route)) (get request :extension)) *out*))
 
 (defn handle-invalid-url [request]
   (clojure.java.io/copy
     (make-binary-response request 404 "404.html" "html") *out*))
 
 (defn handle-get [request]
-    (handle-valid-url (get request :route)))
+    (handle-valid-url request))
 
 (defn handle-post [request]
   (binding [*out* (OutputStreamWriter. *out*)]
