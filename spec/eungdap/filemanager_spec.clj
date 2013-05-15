@@ -13,7 +13,7 @@
 
   (it "gets ./public for /"
     (should= "public"
-      (get-file-name "GET /")))
+      (get-file-name "/")))
 
   (it "properly creates a vector of file names"
     (should= true
