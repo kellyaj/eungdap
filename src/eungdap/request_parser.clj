@@ -7,7 +7,7 @@
     (last (split route #"\."))))
 
 (defn split-on-space [targeted-string]
-  (split targeted-string #"\ "))
+  (split targeted-string #"\s+"))
 
 (defn split-main-request []
   (let [request (split-on-space (read-line))]
