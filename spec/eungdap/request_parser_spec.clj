@@ -31,10 +31,5 @@
       (with-in-str "GET /cosby.png"
         (get (split-main-request) :extension))))
 
-  (it "creates a hash-map for a response"
-    (should= true
-      (with-in-str "GET /test HTTP/1.1"
-      (type (read-and-parse-request)))))
-
 
 )
