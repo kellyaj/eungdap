@@ -55,10 +55,24 @@
 (defn handle-get [request]
     (handle-valid-url request))
 
-(defn handle-post [request]
-  (binding [*out* (OutputStreamWriter. *out*)]
-    (println request)))
+(defn store-body-data [request]
+  (let [body-data-map (get request :body-data)]
+    (loop [remaining-keys (keys body-data-map)
+           remaining-vals (vals body-data-map)]
+      (let [current-key (first remaining-keys)
+            current-val (first remaining-vals)]
+        (post-data current-key current-val))
+        (if (= 1 (count remaining-keys))
+          true
+          (recur
+            (rest remaining-keys)
+            (rest remaining-vals))))))
 
+(defn handle-post [request]
+  (store-body-data request))
+
+(defn get-data-wrapper [data-key]
+  (get-data data-key))
 
 (defn handle-put [request]
   )

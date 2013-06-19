@@ -39,3 +39,13 @@
 
   )
 
+(describe "handle-post"
+  (it "stores the data"
+    (store-body-data
+      (hash-map :junk "ksjgkjdfgkjsd"
+                :body-data (hash-map :aqua "lung" :frank "enstein")))
+    (should= "lung"
+      (get-data-wrapper :aqua))
+    (should= "enstein"
+      (get-data-wrapper :frank))))
+

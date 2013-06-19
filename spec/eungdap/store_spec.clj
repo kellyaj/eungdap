@@ -4,12 +4,12 @@
 
 (describe "store"
   (it "POSTs data to the storage map"
-    (post-data "qwerty")
-    (should= "qwerty"
-      (get-data "qwerty")))
+    (post-data :aqua "lung")
+    (should= "lung"
+      (get-data :aqua)))
 
   (it "PUTs data, changing it in the storage map"
-    (post-data "qwerty")
+    (post-data :data "cosby")
     (put-data "qwerty" "zxcv")
     (should= "zxcv"
       (get-data "zxcv"))
