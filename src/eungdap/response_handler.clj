@@ -1,9 +1,9 @@
 (ns eungdap.response-handler
   (:require [eungdap.header-forge :refer [choose-mime-type add-response craft-header]]
-            [eungdap.filemanager :refer [get-file-data get-file-name]]
+            [eungdap.filemanager :refer [get-file-data get-file-name get-file-size]]
             [eungdap.store :refer :all]))
 
-(import '[java.io OutputStreamWriter ByteArrayOutputStream])
+(import '[java.io OutputStreamWriter ByteArrayOutputStream BufferedOutputStream])
 
 (defn print-the [thing]
   (binding [*out* (OutputStreamWriter. *out*)]
@@ -29,10 +29,14 @@
       (.getBytes (add-header code request (get-content-length file file-extension)))
       (get-file-data (get-file-name file) file-extension))))
 
+(defn write-image [code request file file-extension]
+  (binding [*out* (BufferedOutputStream. *out* (get-file-size file))]
+    (.write *out* (concat-byte-array code request file file-extension))))
+
 (defn make-binary-response [request code file file-extension]
   (cond
     (contains? #{"jpg" "png" "jpeg" "gif"} file-extension)
-      (concat-byte-array code request file file-extension)
+        (write-image code request file file-extension)
     (= nil file-extension)
       (new String (concat-byte-array code request file nil))
     (= true (= nil file-extension) (= false (-> file java.io.File. .isDirectory)))
