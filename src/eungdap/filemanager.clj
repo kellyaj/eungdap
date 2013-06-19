@@ -43,6 +43,6 @@
     (= true (-> (stringify-path file) java.io.File. .isDirectory))
       (generate-directory-html file)
     (= nil file-extension)
-    (deal-with-no-extension file)
+      (deal-with-no-extension file)
     :else
       (java.nio.file.Files/readAllBytes (Paths/get (.toURI (-> (str "public/" file) java.io.File. .getAbsoluteFile))))))

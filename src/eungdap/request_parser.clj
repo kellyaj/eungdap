@@ -1,16 +1,22 @@
 (ns eungdap.request-parser
   (:require [clojure.string :refer [split]]))
 
+(import '[java.io OutputStreamWriter ByteArrayOutputStream BufferedOutputStream])
+
+(defn print-the [thing]
+  (binding [*out* (OutputStreamWriter. *out*)]
+    (println thing)))
+
 (defn identify-file-extension [route]
   (if (= 1 (count (split route #"\.")))
-    "html"
+    nil
     (last (split route #"\."))))
 
 (defn split-on-space [targeted-string]
   (split targeted-string #"\s+"))
 
 (defn get-body-data [request-map]
-  (loop [map-with-body request-map
+  (loop [map-with-body (hash-map)
          line (read-line)]
     (if (empty? line)
       map-with-body
@@ -34,7 +40,7 @@
      line (read-line)]
     (if (empty? line)
       (if (= "POST" (get parsed-request :http-method))
-        (merge parsed-request (get-body-data parsed-request))
+        (assoc parsed-request :body-data (get-body-data parsed-request))
         parsed-request)
       (recur
         (assoc parsed-request

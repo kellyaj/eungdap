@@ -23,7 +23,7 @@
       (identify-file-extension "/cosby.png")))
 
   (it "defaults to html for un-extensioned routes"
-    (should= "html"
+    (should= nil
       (identify-file-extension "/home")))
 
   (it "adds the file extension to the map"
