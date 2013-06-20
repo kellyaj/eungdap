@@ -1,7 +1,6 @@
 (ns eungdap.response-handler
   (:require [eungdap.get-handler :refer [craft-get-response]]
             [eungdap.post-handler :refer [store-body-data
-                                          route-has-stored-data?
                                           associate-route-with-body-data
                                           retrieve-route-data]]))
 
@@ -22,7 +21,9 @@
 
 (defn handle-post [request]
   (store-body-data request)
-  (associate-route-with-body-data (get request :route) (get request :body-data)))
+  (associate-route-with-body-data (get request :route) (get request :body-data))
+  (print-the request)
+  )
 
 (defn handle-put [request]
   )

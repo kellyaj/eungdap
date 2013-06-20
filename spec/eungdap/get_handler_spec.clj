@@ -1,6 +1,7 @@
 (ns eungdap.get-handler-spec
-  (:require [speclj.core :refer [describe it should=]]
-            [eungdap.get-handler :refer :all]))
+  (:require [speclj.core          :refer [describe it should=]]
+            [eungdap.get-handler  :refer :all]
+            [eungdap.post-handler :refer [associate-route-with-body-data]]))
 
 (describe "add-header"
   (it "creates a 404 properly"
@@ -37,3 +38,18 @@
       (re-find #"200 OK"
         (new String (concat-byte-array 200 "GET /image.png" "image.png" "png"))))))
 
+(describe "retrieving stored data"
+  (it "can detect if a route has data POSTed to it"
+    (let [test-data (hash-map :tree "pine" :ice "water")]
+      (associate-route-with-body-data "/test" test-data)
+      (should= true
+        (route-has-stored-data? "/test"))
+      (should= false
+        (route-has-stored-data? "/nodata"))))
+
+  (it "properly formats stored data associated with a route"
+    (let [test-data (hash-map :tree "pine" :coffee "iced")]
+      (should= " coffee = iced tree = pine"
+        (format-stored-data test-data))))
+
+  )

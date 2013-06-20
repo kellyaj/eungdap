@@ -1,6 +1,5 @@
 (ns eungdap.post-handler
   (:require [eungdap.store :refer [get-data
-                                   get-all-stored-data-keys
                                    post-data]]))
 
 (defn store-body-data [request]
@@ -15,9 +14,6 @@
           (recur
             (rest remaining-keys)
             (rest remaining-vals))))))
-
-(defn route-has-stored-data? [route]
-  (true? (string? (some #{route} (get-all-stored-data-keys)))))
 
 (defn associate-route-with-body-data [route body-data]
   (post-data route body-data))

@@ -22,12 +22,5 @@
      (let [test-data (hash-map :tree "pine" :ice "water")]
       (associate-route-with-body-data "/test" test-data)
        (should= test-data
-         (retrieve-route-data "/test"))))
+         (retrieve-route-data "/test")))))
 
-  (it "can detect if a route has data POSTed to it"
-    (let [test-data (hash-map :tree "pine" :ice "water")]
-      (associate-route-with-body-data "/test" test-data)
-      (should= true
-        (route-has-stored-data? "/test"))
-      (should= false
-        (route-has-stored-data? "/nodata")))))

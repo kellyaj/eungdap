@@ -1,10 +1,13 @@
 (ns eungdap.get-handler
-  (:require [eungdap.header-forge :refer [choose-mime-type
+  (:require [eungdap.store        :refer [get-all-stored-data-keys
+                                          get-data]]
+            [eungdap.header-forge :refer [choose-mime-type
                                           add-response
                                           craft-header]]
-            [eungdap.filemanager :refer [get-file-data
-                                         get-file-name
-                                         get-file-size]]))
+            [eungdap.filemanager  :refer [get-file-data
+                                          get-file-name
+                                          get-file-size]]
+            [clojure.string       :refer [split join]]))
 
 (import '[java.io OutputStreamWriter ByteArrayOutputStream BufferedOutputStream])
 
@@ -17,16 +20,40 @@
       (str
         (craft-header code (get request :extension) content-length))))
 
+(defn format-stored-data [stored-data-map]
+   (loop [formatted-string ""
+          stringified-data-keys-map (zipmap
+                       (map
+                         #(name %) (keys stored-data-map)) 
+                         (vals stored-data-map))]
+     (if (empty? stringified-data-keys-map)
+       formatted-string
+       (recur
+         (str formatted-string " "
+              (first (first stringified-data-keys-map))
+              " = "
+              (last (first stringified-data-keys-map)))
+         (rest stringified-data-keys-map)))))
+
+(defn route-has-stored-data? [route]
+  (true? (string? (some #{route} (get-all-stored-data-keys)))))
+
 (defn get-content-length [file file-extension]
   (if (= file-extension "directory")
     "directory"
     (alength (get-file-data (get-file-name file) file-extension))))
 
 (defn concat-byte-array [code request file file-extension]
+  (if (route-has-stored-data? (get request :route))
   (byte-array
     (concat
       (.getBytes (add-header code request (get-content-length file file-extension)))
-      (get-file-data (get-file-name file) file-extension))))
+      (.getBytes (format-stored-data (get-data (get request :route))))
+      (get-file-data (get-file-name file) file-extension)))
+  (byte-array
+    (concat
+      (.getBytes (add-header code request (get-content-length file file-extension)))
+      (get-file-data (get-file-name file) file-extension)))))
 
 (defn write-image [code request file file-extension]
   (binding [*out* (BufferedOutputStream. *out* (get-file-size file))]
@@ -35,7 +62,7 @@
 (defn make-binary-response [request code file file-extension]
   (cond
     (contains? #{"jpg" "png" "jpeg" "gif"} file-extension)
-        (write-image code request file file-extension)
+      (write-image code request file file-extension)
     (= nil file-extension)
       (new String (concat-byte-array code request file nil))
     (= true (= nil file-extension) (= false (-> file java.io.File. .isDirectory)))
