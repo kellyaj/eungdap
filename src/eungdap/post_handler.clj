@@ -1,5 +1,7 @@
 (ns eungdap.post-handler
-  (:require [eungdap.store :refer :all]))
+  (:require [eungdap.store :refer [get-data
+                                   get-all-stored-data-keys
+                                   post-data]]))
 
 (defn store-body-data [request]
   (let [body-data-map (get request :body-data)]
