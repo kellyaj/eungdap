@@ -28,7 +28,8 @@
 
 (defn handle-put [request]
   (let [body-data (get request :body-data)]
-  (put-received-data (first (keys body-data)) (first (vals body-data)))))
+  (put-received-data (first (keys body-data)) (first (vals body-data))))
+  (print-the request))
 
 (defn choose-response [request validity http-method]
   (if (= true validity)
