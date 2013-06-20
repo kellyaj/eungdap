@@ -10,9 +10,8 @@
 
   (it "PUTs data, changing it in the storage map"
     (post-data :data "cosby")
-    (put-data "qwerty" "zxcv")
-    (should= "zxcv"
-      (get-data "zxcv"))
-    (should= nil
-      (get-data "qwerty")))
+    (put-data :data "jello")
+    (should= "jello"
+      (get-data :data)))
+
   )

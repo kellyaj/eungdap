@@ -24,7 +24,7 @@
    (loop [formatted-string ""
           stringified-data-keys-map (zipmap
                        (map
-                         #(name %) (keys stored-data-map)) 
+                         #(name %) (keys stored-data-map))
                          (vals stored-data-map))]
      (if (empty? stringified-data-keys-map)
        formatted-string
@@ -45,7 +45,7 @@
 
 (defn concat-byte-array [code request file file-extension]
   (if (route-has-stored-data? (get request :route))
-  (byte-array
+  (byte-array 1024
     (concat
       (.getBytes (add-header code request (get-content-length file file-extension)))
       (.getBytes (format-stored-data (get-data (get request :route))))

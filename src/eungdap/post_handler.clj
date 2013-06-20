@@ -20,6 +20,3 @@
 
 (defn retrieve-route-data [route]
   (get-data route))
-
-(defn get-data-wrapper [data-key]
-  (get-data data-key))

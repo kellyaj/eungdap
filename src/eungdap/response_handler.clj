@@ -1,5 +1,6 @@
 (ns eungdap.response-handler
   (:require [eungdap.get-handler :refer [craft-get-response]]
+            [eungdap.put-handler :refer [put-received-data]]
             [eungdap.post-handler :refer [store-body-data
                                           associate-route-with-body-data
                                           retrieve-route-data]]))
@@ -26,7 +27,8 @@
   )
 
 (defn handle-put [request]
-  )
+  (let [body-data (get request :body-data)]
+  (put-received-data (first (keys body-data)) (first (vals body-data)))))
 
 (defn choose-response [request validity http-method]
   (if (= true validity)
