@@ -2,6 +2,9 @@
 
 (def storage-map (atom {}))
 
+(defn get-all-stored-data-keys []
+  (keys @storage-map))
+
 (defn get-data [data-key]
   (get @storage-map data-key))
 

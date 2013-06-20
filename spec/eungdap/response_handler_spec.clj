@@ -35,17 +35,5 @@
   (it "properly adds a header for a supported image file"
     (should= "200 OK"
       (re-find #"200 OK"
-        (new String (concat-byte-array 200 "GET /image.png" "image.png" "png")))))
-
-  )
-
-(describe "handle-post"
-  (it "stores the data"
-    (store-body-data
-      (hash-map :junk "ksjgkjdfgkjsd"
-                :body-data (hash-map :aqua "lung" :frank "enstein")))
-    (should= "lung"
-      (get-data-wrapper :aqua))
-    (should= "enstein"
-      (get-data-wrapper :frank))))
+        (new String (concat-byte-array 200 "GET /image.png" "image.png" "png"))))))
 

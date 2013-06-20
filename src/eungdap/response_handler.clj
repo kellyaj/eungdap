@@ -1,7 +1,10 @@
 (ns eungdap.response-handler
   (:require [eungdap.header-forge :refer [choose-mime-type add-response craft-header]]
             [eungdap.filemanager :refer [get-file-data get-file-name get-file-size]]
-            [eungdap.store :refer :all]))
+            [eungdap.post-handler :refer [store-body-data
+                                          route-has-stored-data?
+                                          associate-route-with-body-data
+                                          retrieve-route-data]]))
 
 (import '[java.io OutputStreamWriter ByteArrayOutputStream BufferedOutputStream])
 
@@ -46,7 +49,9 @@
 
 (defn handle-valid-url [request]
   (clojure.java.io/copy
-    (make-binary-response request 200 (get-file-name (get request :route)) (get request :extension)) *out*))
+    (make-binary-response
+      request 200
+      (get-file-name (get request :route)) (get request :extension)) *out*))
 
 (defn handle-invalid-url [request]
   (clojure.java.io/copy
@@ -55,24 +60,9 @@
 (defn handle-get [request]
     (handle-valid-url request))
 
-(defn store-body-data [request]
-  (let [body-data-map (get request :body-data)]
-    (loop [remaining-keys (keys body-data-map)
-           remaining-vals (vals body-data-map)]
-      (let [current-key (first remaining-keys)
-            current-val (first remaining-vals)]
-        (post-data current-key current-val))
-        (if (= 1 (count remaining-keys))
-          true
-          (recur
-            (rest remaining-keys)
-            (rest remaining-vals))))))
-
 (defn handle-post [request]
-  (store-body-data request))
-
-(defn get-data-wrapper [data-key]
-  (get-data data-key))
+  (store-body-data request)
+  (associate-route-with-body-data (get request :route) (get request :body-data)))
 
 (defn handle-put [request]
   )
