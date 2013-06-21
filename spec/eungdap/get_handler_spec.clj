@@ -51,5 +51,7 @@
     (let [test-data (hash-map :tree "pine" :coffee "iced")]
       (should= " coffee = iced tree = pine"
         (format-stored-data test-data))))
-
-  )
+  
+  (it "check method not allowed"
+    (should= "a string of stuff"
+      (craft-method-not-allowed))))

@@ -39,7 +39,7 @@
     [parsed-request (split-main-request)
      line (read-line)]
     (if (empty? line)
-      (if (= "POST" (get parsed-request :http-method))
+      (if (contains? #{"POST" "PUT"} (get parsed-request :http-method))
         (assoc parsed-request :body-data (get-body-data parsed-request))
         parsed-request)
       (recur

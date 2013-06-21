@@ -58,7 +58,6 @@
         (.getBytes formatted-data)
         (get-file-data (get-file-name file) file-extension)))))
 
-
 (defn concat-byte-array [code request file file-extension]
   (if (route-has-stored-data? (get request :route))
     (create-dynamic-byte-array code request file file-extension)
@@ -82,8 +81,18 @@
     :else
       (str (new String (concat-byte-array code request file file-extension)))))
 
+(defn craft-method-not-allowed []
+  (new String
+   (byte-array
+     (.getBytes
+      (craft-header 405 "txt"
+        (alength (byte-array (.getBytes (craft-header 405 "txt" 1024)))))))))
+
 (defn craft-get-response [request validity]
   (cond
+    (= "/partial_content.txt" (get request :route))
+      (make-binary-response request 206
+        (get-file-name (get request :route)) (get request :extension))
     (true? validity)
       (make-binary-response request 200
         (get-file-name (get request :route)) (get request :extension))

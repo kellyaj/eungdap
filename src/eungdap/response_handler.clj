@@ -18,18 +18,15 @@
   (clojure.java.io/copy (craft-get-response request false) *out*))
 
 (defn handle-get [request]
-    (handle-valid-url request))
+  (handle-valid-url request))
 
 (defn handle-post [request]
   (store-body-data request)
   (associate-route-with-body-data (get request :route) (get request :body-data))
-  (print-the request)
-  )
+  (clojure.java.io/copy "HTTP/1.1 200 OK" *out*))
 
 (defn handle-put [request]
-  (let [body-data (get request :body-data)]
-  (put-received-data (first (keys body-data)) (first (vals body-data))))
-  (print-the request))
+  (handle-post request))
 
 (defn choose-response [request validity http-method]
   (if (= true validity)
@@ -39,5 +36,5 @@
       (= http-method "POST")
         (handle-post request)
       (= http-method "PUT")
-         (handle-put request))
+        (handle-put request))
   (handle-invalid-url request)))

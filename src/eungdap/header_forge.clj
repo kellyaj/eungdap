@@ -19,6 +19,7 @@
          (= code 206) "206 Partial Content"
          (= code 301) "301 Moved Permanently"
          (= code 404) "404 Not Found"
+         (= code 405) "405 Method Not Allowed"
          :else "500 Internal Server Error")))
 
 (defn craft-header [code extension content-length]

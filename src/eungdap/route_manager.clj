@@ -15,4 +15,16 @@
                "/public"
                "/image.jpeg"
                "/image.gif"
+               "/partial_content.txt"
                "/image.png"} requested-route))
+
+(defn method-allowed? [route http-method]
+  (cond
+    (= route "/file1")
+      (contains? #{"GET"} http-method)
+    (= route "/file2")
+      (contains? #{"GET"} http-method)
+    (= route "/text-file.txt")
+      (contains? #{"GET"} http-method)
+    :else
+      true))
