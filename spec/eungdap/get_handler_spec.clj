@@ -50,8 +50,27 @@
   (it "properly formats stored data associated with a route"
     (let [test-data (hash-map :tree "pine" :coffee "iced")]
       (should= " coffee = iced tree = pine"
-        (format-stored-data test-data))))
-  
-  (it "check method not allowed"
-    (should= "a string of stuff"
-      (craft-method-not-allowed))))
+        (format-stored-data test-data)))))
+
+(describe "handling partial content"
+
+  (it "splits a range into an array with the offset and the length"
+    (let [test-data (hash-map :Range "bytes=0-4")]
+      (should= "0"
+        (first (split-range (get test-data :Range))))
+      (should= "4"
+        (last (split-range (get test-data :Range))))))
+
+  (it "gets the first 4 bytes of a file"
+    (should="HTTP/1.1 206 Partial Content\r\nContent-Length: 4\r\nContent-Type: text/plain\r\nServer: Eungdap 0.1\r\n\r\nThis"
+      (new String
+           (partial-content-response
+             (hash-map :Range "bytes=0-4" :route "/partial_content.txt" :extension "txt") 
+             206 "partial_content.txt" "txt"))))
+
+  (it "gets the first 7 bytes of a file"
+    (should="HTTP/1.1 206 Partial Content\r\nContent-Length: 7\r\nContent-Type: text/plain\r\nServer: Eungdap 0.1\r\n\r\nThis is"
+      (new String
+           (partial-content-response
+             (hash-map :Range "bytes=0-7" :route "/partial_content.txt" :extension "txt")
+             206 "partial_content.txt" "txt")))))

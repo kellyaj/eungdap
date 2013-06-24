@@ -1,8 +1,10 @@
 (ns eungdap.filemanager
-  (:import java.io.File java.nio.file.Paths))
+  (:import java.io.File java.nio.file.Paths java.io.ByteArrayOutputStream)
+  (:require [clojure.string :refer [split]]))
 
 (import '[java.nio.file])
 (import '[java.nio.File.Paths])
+(import '[java.io.ByteArrayOutputStream])
 
 (defn get-file-name [request]
   (if (= request "/")
@@ -35,6 +37,13 @@
 (defn get-file-size [file]
   (java.nio.file.Files/size
     (Paths/get (.toURI (-> (str "public/" file) java.io.File. .getAbsoluteFile)))))
+
+(defn read-partial-file [file file-extension offset length]
+  (let [outputstream (ByteArrayOutputStream.)]
+    (.write outputstream
+      (java.nio.file.Files/readAllBytes (Paths/get (.toURI (-> (str "public/" file) java.io.File. .getAbsoluteFile)))) offset length)
+  (.toByteArray outputstream)))
+
 
 (defn get-file-data [file file-extension]
   (cond

@@ -47,4 +47,11 @@
     (should="file1 contents"
       (re-find #"file1 contents" (new String (deal-with-no-extension "/file1")))))
 
+  (it "reads a specific number of bytes for partial files"
+    (should= 4
+      (alength (read-partial-file "partial_content.txt" "txt" 0 4)))
+    (should= 9
+      (alength (read-partial-file "partial_content.txt" "txt" 0 9))))
+
+
   )

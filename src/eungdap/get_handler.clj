@@ -6,7 +6,8 @@
                                           craft-header]]
             [eungdap.filemanager  :refer [get-file-data
                                           get-file-name
-                                          get-file-size]]
+                                          get-file-size
+                                          read-partial-file]]
             [clojure.string       :refer [split join]]))
 
 (import '[java.io OutputStreamWriter ByteArrayOutputStream BufferedOutputStream])
@@ -69,10 +70,26 @@
 (defn write-image [code request file file-extension]
     (.write *out* (concat-byte-array code request file file-extension)))
 
+(defn split-range [range-string]
+  (split (last (split range-string #"\=")) #"\-"))
+
+(defn partial-content-response [request code file file-extension]
+  (let [offset (read-string (first (split-range (get request :Range))))
+        length (read-string (last (split-range (get request :Range))))]
+    (byte-array
+      (concat
+        (.getBytes
+          (add-header code request
+                      (alength
+                        (read-partial-file file file-extension offset length))))
+        (read-partial-file file file-extension offset length)))))
+
 (defn make-binary-response [request code file file-extension]
   (cond
     (contains? #{"jpg" "png" "jpeg" "gif"} file-extension)
       (write-image code request file file-extension)
+    (= 206 code)
+      (new String (partial-content-response request code file file-extension))
     (= nil file-extension)
       (new String (concat-byte-array code request file nil))
     (= true (= nil file-extension) (= false (-> file java.io.File. .isDirectory)))
@@ -89,7 +106,7 @@
 
 (defn craft-get-response [request validity]
   (cond
-    (= "/partial_content.txt" (get request :route))
+    (get request :Range)
       (make-binary-response request 206
         (get-file-name (get request :route)) (get request :extension))
     (true? validity)

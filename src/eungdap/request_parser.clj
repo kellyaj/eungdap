@@ -46,4 +46,4 @@
         (assoc parsed-request
           (keyword (first (split-on-space line)))
           (last (split-on-space line)))
-        (read-line)))))
+        (clojure.string/replace (read-line) #"\:" "")))))
