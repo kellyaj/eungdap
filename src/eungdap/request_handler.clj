@@ -11,4 +11,4 @@
     request-map
     (check-route-validity (get request-map :route))
     (get request-map :http-method))
-    (clojure.java.io/copy "HTTP/1.1 405 Method Not Allowed" *out*)))
+    (clojure.java.io/copy "HTTP/1.1 405 Method Not Allowed\r\nAllow: GET\r\n\r\n" *out*)))

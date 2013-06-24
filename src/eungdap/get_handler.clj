@@ -67,8 +67,7 @@
         (get-file-data (get-file-name file) file-extension)))))
 
 (defn write-image [code request file file-extension]
-  (binding [*out* (BufferedOutputStream. *out* (get-file-size file))]
-    (.write *out* (concat-byte-array code request file file-extension))))
+    (.write *out* (concat-byte-array code request file file-extension)))
 
 (defn make-binary-response [request code file file-extension]
   (cond
@@ -97,9 +96,5 @@
       (make-binary-response request 200
         (get-file-name (get request :route)) (get request :extension))
     (false? validity)
-      (make-binary-response request 404 "404.html" "html")
-    (= "POST" validity)
-      (craft-header 200 "html" 1024)
-    (= "PUT" validity)
-      (craft-header 200 "html" 30)))
+      (make-binary-response request 404 "404.html" "html")))
 

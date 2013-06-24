@@ -12,7 +12,9 @@
     (println thing)))
 
 (defn handle-valid-url [request]
-  (clojure.java.io/copy (craft-get-response request true) *out*))
+  (if (contains? #{"jpg" "gif" "png" "jpeg"} (get request :extension))
+    (craft-get-response request true)
+    (clojure.java.io/copy (craft-get-response request true) *out*)))
 
 (defn handle-invalid-url [request]
   (clojure.java.io/copy (craft-get-response request false) *out*))
@@ -31,6 +33,8 @@
 (defn choose-response [request validity http-method]
   (if (= true validity)
     (cond
+      (= "/redirect" (get request :route))
+        (handle-get (hash-map :route "/" :extension nil))
       (= http-method "GET")
         (handle-get request)
       (= http-method "POST")
