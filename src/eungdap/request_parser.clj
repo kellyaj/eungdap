@@ -1,5 +1,6 @@
 (ns eungdap.request-parser
-  (:require [clojure.string :refer [split]]))
+  (:require [eungdap.route-manager :refer [method-allowed?]]
+            [clojure.string :refer [split]]))
 
 (import '[java.io OutputStreamWriter ByteArrayOutputStream BufferedOutputStream])
 
@@ -39,9 +40,15 @@
     [parsed-request (split-main-request)
      line (read-line)]
     (if (empty? line)
-      (if (contains? #{"POST" "PUT"} (get parsed-request :http-method))
-        (assoc parsed-request :body-data (get-body-data parsed-request))
-        parsed-request)
+      (cond
+        (= false
+           (method-allowed?
+             (get parsed-request :route) (get parsed-request :http-method)))
+          parsed-request
+        (contains? #{"POST" "PUT"} (get parsed-request :http-method))
+          (assoc parsed-request :body-data (get-body-data parsed-request))
+       :else
+          parsed-request)
       (recur
         (assoc parsed-request
           (keyword (first (split-on-space line)))
