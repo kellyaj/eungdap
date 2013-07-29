@@ -66,11 +66,4 @@
       (new String
            (partial-content-response
              (hash-map :Range "bytes=0-4" :route "/partial_content.txt" :extension "txt") 
-             206 "partial_content.txt" "txt"))))
-
-  (it "gets the first 7 bytes of a file"
-    (should="HTTP/1.1 206 Partial Content\r\nContent-Length: 7\r\nContent-Type: text/plain\r\nServer: Eungdap 0.1\r\n\r\nThis is"
-      (new String
-           (partial-content-response
-             (hash-map :Range "bytes=0-7" :route "/partial_content.txt" :extension "txt")
              206 "partial_content.txt" "txt")))))
