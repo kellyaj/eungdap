@@ -48,11 +48,14 @@
 (defn handle-put [request]
   (handle-post request))
 
+(defn handle-redirect []
+  (clojure.java.io/copy "HTTP/1.1 302\r\nLocation: http://localhost:5000/\r\n\r\n" *out*))
+
 (defn choose-response [request validity http-method]
   (if (= true validity)
     (cond
       (= "/redirect" (get request :route))
-        (handle-get (hash-map :route "/" :extension nil))
+        (handle-redirect)
       (= http-method "GET")
         (handle-get request)
       (= http-method "POST")

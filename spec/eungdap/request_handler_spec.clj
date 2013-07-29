@@ -12,7 +12,6 @@
       (handle-request request-map))))))
 
 (describe "parameter decode"
-
   (it "decodes parameters into a params hash"
     (let [query-string "name=andrew&frank=enstein"]
       (let [params (parse-query-string query-string)]
