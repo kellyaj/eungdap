@@ -4,7 +4,11 @@
         [eungdap.request-handler :refer [handle-request]]
         [eungdap.request-parser :refer [read-and-parse-request]]))
 
-(import '[java.io BufferedOutputStream BufferedReader InputStreamReader])
+(import '[java.io BufferedOutputStream BufferedReader InputStreamReader OutputStreamWriter])
+
+(defn print-the [thing]
+  (binding [*out* (OutputStreamWriter. *out*)]
+    (println thing)))
 
 (defn start-server [in out]
   (binding [*in* (BufferedReader. (InputStreamReader. in))

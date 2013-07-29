@@ -10,3 +10,18 @@
     (should= "HTTP/1.1 405 Method Not Allowed\r\nAllow: GET\r\n\r\n"
       (with-out-str
       (handle-request request-map))))))
+
+(describe "parameter decode"
+
+  (it "decodes parameters into a params hash"
+    (let [query-string "name=andrew&frank=enstein"]
+      (let [params (parse-query-string query-string)]
+        (should= "enstein"
+          (get params "frank")))))
+
+  (it "puts the parameters into the request hash"
+    (let
+      [request-map
+       (hash-map :route "/?name=andrew&frank=enstein" :http-method "GET")]
+      (should= "/"
+        (get (alter-request-map request-map) :route)))))
