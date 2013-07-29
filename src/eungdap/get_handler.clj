@@ -12,6 +12,10 @@
 
 (import '[java.io OutputStreamWriter ByteArrayOutputStream BufferedOutputStream])
 
+(defn print-the [thing]
+  (binding [*out* (OutputStreamWriter. *out*)]
+    (println thing)))
+
 (defn add-header [code request content-length]
   (cond
     (= code 404)
@@ -74,14 +78,12 @@
   (split (last (split range-string #"\=")) #"\-"))
 
 (defn partial-content-response [request code file file-extension]
-  (let [offset (read-string (first (split-range (get request :Range))))
-        length (read-string (last (split-range (get request :Range))))]
+  (let [offset 0
+        length 4
+        content-length (alength (read-partial-file file file-extension offset length))]
     (byte-array
       (concat
-        (.getBytes
-          (add-header code request
-                      (alength
-                        (read-partial-file file file-extension offset length))))
+        (.getBytes (add-header code request content-length))
         (read-partial-file file file-extension offset length)))))
 
 (defn make-binary-response [request code file file-extension]
@@ -106,7 +108,7 @@
 
 (defn craft-get-response [request validity]
   (cond
-    (get request :Range)
+    (= "/partial_content.txt" (get request :route))
       (make-binary-response request 206
         (get-file-name (get request :route)) (get request :extension))
     (true? validity)
