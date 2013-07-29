@@ -16,6 +16,7 @@
                "/image.jpeg"
                "/image.gif"
                "/partial_content.txt"
+               "/parameters"
                "/image.png"} requested-route))
 
 (defn method-allowed? [route http-method]

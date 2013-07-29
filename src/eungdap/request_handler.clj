@@ -9,16 +9,17 @@
 (defn parse-query-string [query]
   (form-decode query "UTF-8"))
 
-(defn alter-request-map [request-map]
+(defn decode-query-string [request-map]
   (let [cleansed-route (first (split (get request-map :route) #"\?"))
         query-string (last (split (get request-map :route) #"\?"))
         altered-map (assoc request-map :route cleansed-route)]
     (assoc altered-map :params (parse-query-string query-string))))
 
-(defn handle-request [request-map]
-  (if (method-allowed? (get request-map :route) (get request-map :http-method))
-    (choose-response
-      request-map
-      (check-route-validity (get request-map :route))
-      (get request-map :http-method))
-    (clojure.java.io/copy "HTTP/1.1 405 Method Not Allowed\r\nAllow: GET\r\n\r\n" *out*)))
+(defn handle-request [unaltered-request-map]
+  (let [request-map (decode-query-string unaltered-request-map)]
+    (if (method-allowed? (get request-map :route) (get request-map :http-method))
+      (choose-response
+        request-map
+        (check-route-validity (get request-map :route))
+        (get request-map :http-method))
+      (clojure.java.io/copy "HTTP/1.1 405 Method Not Allowed\r\nAllow: GET\r\n\r\n" *out*))))

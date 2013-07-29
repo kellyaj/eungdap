@@ -19,8 +19,26 @@
 (defn handle-invalid-url [request]
   (clojure.java.io/copy (craft-get-response request false) *out*))
 
+(defn serialize-recur [all-keys all-vals the-string]
+  (let [the-key (first all-keys)
+        the-val (first all-vals)]
+    (if (empty? the-key)
+      the-string
+      (recur
+        (rest all-keys)
+        (rest all-vals)
+        (str the-string the-key " = " the-val " ")))))
+
+(defn serialize [params]
+  (serialize-recur (keys params) (vals params) ""))
+
+(defn handle-parameters [request]
+  (clojure.java.io/copy (str "HTTP/1.1 200 OK\r\n\r\n" (serialize (get request :params))) *out*))
+
 (defn handle-get [request]
-  (handle-valid-url request))
+  (if (= "/parameters" (get request :route))
+    (handle-parameters request)
+    (handle-valid-url request)))
 
 (defn handle-post [request]
   (store-body-data request)

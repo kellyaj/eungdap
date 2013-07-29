@@ -296,3 +296,47 @@ my-map
 (count (clojure.string/split "/pretzels" #"\."))
 (last (clojure.string/split "/pretzels.html" #"\."))
 fg
+(require 'eungdap.request-handler)
+(require '[ring.util.codec :refer [url-decode]])
+(def thestring "variable_1=Operators%20%3C%2C%20%3E%2C%20%3D%2C%20!%3D%3B%20%2B%2C%20-%2C%20*%2C%20%26%2C%20%40%2C%20%23%2C%20%24%2C%20%5B%2C%20%5D%3A%20%22is%20that%20all%22%3F&variable_2=stuff")
+(url-decode thestring)
+(require '[ring.util.codec :refer [url-decode form-decode]])
+(form-decode thestring)
+(def asdf {"dog" "cat", "frog" "water"}
+)
+asdf
+(serialize asdf)
+(defn serialize [m sep] (apply str (concat (interpose sep (vals m)) ["\n"])))
+(serialize asdf)
+(serialize asdf " ")
+(interpose " " asdf 
+)
+(apply str (interpose ", " asdf))
+(apply str (interpose " = " asdf))
+(concat (keys asdf))
+(concat (keys asdf) (vals asdf))
+(apply str (concat (interpose " " (vals asdf))))
+(first asdf)
+(first (keys asdf)
+)
+(apply str (first (keys asdf)) " = " (first (vals asdf)))
+(def mystr "")
+mystr
+(apply str mystr "axvbxb")
+(apply str mystr "axvbxb" "xcvbxcbcb)
+"
+)
+mystr
+(def maa "abc")
+(apply str maa "aaa")
+(empty? (keys {}))
+(empty? (keys {:foo "bar"}))
+assdf
+asdf
+(rest asdf)
+(rest (rest asdf))
+(empty? (rest (rest asdf)))
+(keys (rest (rest asdf)))
+(empty? (keys (rest (rest asdf))))
+(empty? (rest (rest asdf))))
+(empty? (rest (rest asdf)))
