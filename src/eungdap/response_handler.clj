@@ -7,10 +7,6 @@
 
 (import '[java.io OutputStreamWriter ByteArrayOutputStream BufferedOutputStream])
 
-(defn print-the [thing]
-  (binding [*out* (OutputStreamWriter. *out*)]
-    (println thing)))
-
 (defn handle-valid-url [request]
   (if (contains? #{"jpg" "gif" "png" "jpeg"} (get request :extension))
     (craft-get-response request true)
