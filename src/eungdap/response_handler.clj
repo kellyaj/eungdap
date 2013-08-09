@@ -39,7 +39,7 @@
 (defn handle-post [request]
   (store-body-data request)
   (associate-route-with-body-data (get request :route) (get request :body-data))
-  (clojure.java.io/copy "HTTP/1.1 200 OK" *out*))
+  (clojure.java.io/copy "HTTP/1.1 200 OK\r\n\r\n" *out*))
 
 (defn handle-put [request]
   (handle-post request))
