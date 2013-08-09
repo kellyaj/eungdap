@@ -16,16 +16,14 @@
 (defn split-on-space [targeted-string]
   (split targeted-string #"\s+"))
 
-(defn get-body-data [request-map]
-  (loop [map-with-body (hash-map)
-         line (read-line)]
-    (if (empty? line)
-      map-with-body
-      (recur
-        (assoc map-with-body
-               (keyword (first (split line #"\=")))
-               (last (split line #"\=")))
-        (read-line)))))
+(defn format-body-data [raw-body-data]
+  (let [split-data (split raw-body-data #"\=")]
+    (hash-map (first split-data) (last split-data))))
+
+(defn get-body-data [length]
+  (let [body-char-array (char-array length)]
+    (.read *in* body-char-array 0 length)
+    (format-body-data (apply str body-char-array))))
 
 (defn split-main-request []
   (let [request (split-on-space (read-line))]
@@ -46,7 +44,7 @@
              (get parsed-request :route) (get parsed-request :http-method)))
           parsed-request
         (contains? #{"POST" "PUT"} (get parsed-request :http-method))
-          (assoc parsed-request :body-data (get-body-data parsed-request))
+          (assoc parsed-request :body-data (get-body-data (read-string (get parsed-request :Content-Length))))
        :else
           parsed-request)
       (recur

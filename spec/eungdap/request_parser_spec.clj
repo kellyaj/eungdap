@@ -31,5 +31,9 @@
       (with-in-str "GET /cosby.png"
         (get (split-main-request) :extension))))
 
+  (it "creates a map from body data"
+      (should= {"data" "cosby"}
+        (format-body-data "data=cosby")))
+
 
 )
