@@ -1,6 +1,7 @@
 (ns eungdap.response-handler
   (:require [eungdap.get-handler :refer [craft-get-response]]
             [eungdap.put-handler :refer [put-received-data]]
+            [clojure.tools.logging :refer [info]]
             [eungdap.post-handler :refer [store-body-data
                                           associate-route-with-body-data
                                           retrieve-route-data]]))
@@ -46,6 +47,7 @@
   (clojure.java.io/copy "HTTP/1.1 302\r\nLocation: http://localhost:5000/\r\n\r\n" *out*))
 
 (defn choose-response [request validity http-method]
+  (info "\r\n Determined request validity of" (get request :route) "to be" validity)
   (if (= true validity)
     (cond
       (= "/redirect" (get request :route))

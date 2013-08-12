@@ -1,6 +1,7 @@
 (ns eungdap.filemanager
   (:import java.io.File java.nio.file.Paths java.io.ByteArrayOutputStream)
-  (:require [clojure.string :refer [split]]))
+  (:require [clojure.string :refer [split]]
+            [clojure.tools.logging :refer [info]]))
 
 
 (defn get-file-name [request]
@@ -9,13 +10,19 @@
       (str (peek (clojure.string/split request #"/")))))
 
 (defn check-file-availability [file]
-  (.isFile (-> (str "public/" file) java.io.File. .getAbsoluteFile)))
+  (let [file-availability
+        (.isFile (-> (str "public/" file) java.io.File. .getAbsoluteFile))]
+    (info "\r\n Determined availablity of file" file "to be" file-availability)
+    file-availability))
+
 
 (defn make-file-href [file-path file]
   (str "<a href=\"/" file "\">" file "</a><br>"))
 
 (defn stringify-path [file-or-directory]
-  (-> file-or-directory java.io.File. .getAbsolutePath))
+  (let [file-path (-> file-or-directory java.io.File. .getAbsolutePath)]
+    (info "\r\n Determined path of file" file-or-directory "to be" file-path)
+    file-path))
 
 (defn create-file-list [directory-name]
     (into #{}
