@@ -53,5 +53,9 @@
     (should= 9
       (alength (read-partial-file "partial_content.txt" "txt" 0 9))))
 
+  (it "returns true if a file is in the file system"
+    (should= true
+      (check-file-availability "pretzels.html")))
+
 
   )

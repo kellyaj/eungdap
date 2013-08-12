@@ -2,10 +2,14 @@
   (:import java.io.File java.nio.file.Paths java.io.ByteArrayOutputStream)
   (:require [clojure.string :refer [split]]))
 
+
 (defn get-file-name [request]
   (if (= request "/")
       "public"
       (str (peek (clojure.string/split request #"/")))))
+
+(defn check-file-availability [file]
+  (.isFile (-> (str "public/" file) java.io.File. .getAbsoluteFile)))
 
 (defn make-file-href [file-path file]
   (str "<a href=\"/" file "\">" file "</a><br>"))
