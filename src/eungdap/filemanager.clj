@@ -2,10 +2,6 @@
   (:import java.io.File java.nio.file.Paths java.io.ByteArrayOutputStream)
   (:require [clojure.string :refer [split]]))
 
-(import '[java.nio.file])
-(import '[java.nio.File.Paths])
-(import '[java.io.ByteArrayOutputStream])
-
 (defn get-file-name [request]
   (if (= request "/")
       "public"

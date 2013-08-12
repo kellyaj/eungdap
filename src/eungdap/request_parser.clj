@@ -2,12 +2,6 @@
   (:require [eungdap.route-manager :refer [method-allowed?]]
             [clojure.string :refer [split]]))
 
-(import '[java.io OutputStreamWriter ByteArrayOutputStream BufferedOutputStream])
-
-(defn print-the [thing]
-  (binding [*out* (OutputStreamWriter. *out*)]
-    (println thing)))
-
 (defn identify-file-extension [route]
   (if (= 1 (count (split route #"\.")))
     nil

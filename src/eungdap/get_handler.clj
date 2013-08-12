@@ -10,12 +10,6 @@
                                           read-partial-file]]
             [clojure.string       :refer [split join]]))
 
-(import '[java.io OutputStreamWriter ByteArrayOutputStream BufferedOutputStream])
-
-(defn print-the [thing]
-  (binding [*out* (OutputStreamWriter. *out*)]
-    (println thing)))
-
 (defn add-header [code request content-length]
   (cond
     (= code 404)

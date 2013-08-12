@@ -3,8 +3,7 @@
             [eungdap.get-handler :refer [craft-method-not-allowed]]
             [eungdap.response-handler :refer [choose-response]]
             [clojure.string :refer [split]]
-            [ring.util.codec :refer [form-decode]])
-  (:import [java.io OutputStreamWriter ByteArrayOutputStream BufferedOutputStream]))
+            [ring.util.codec :refer [form-decode]]))
 
 (defn parse-query-string [query]
   (form-decode query "UTF-8"))

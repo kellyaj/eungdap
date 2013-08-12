@@ -5,8 +5,6 @@
                                           associate-route-with-body-data
                                           retrieve-route-data]]))
 
-(import '[java.io OutputStreamWriter ByteArrayOutputStream BufferedOutputStream])
-
 (defn handle-valid-url [request]
   (if (contains? #{"jpg" "gif" "png" "jpeg"} (get request :extension))
     (craft-get-response request true)

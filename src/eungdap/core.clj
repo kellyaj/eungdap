@@ -2,9 +2,8 @@
   (:require
         [server.socket :refer :all]
         [eungdap.request-handler :refer [handle-request]]
-        [eungdap.request-parser :refer [read-and-parse-request]]))
-
-(import '[java.io BufferedOutputStream BufferedReader InputStreamReader])
+        [eungdap.request-parser :refer [read-and-parse-request]])
+  (:import java.io.BufferedOutputStream java.io.BufferedReader java.io.InputStreamReader))
 
 (defn start-server [in out]
   (binding [*in* (BufferedReader. (InputStreamReader. in))
