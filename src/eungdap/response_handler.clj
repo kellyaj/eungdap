@@ -7,6 +7,7 @@
                                           retrieve-route-data]]))
 
 (defn handle-valid-url [request]
+  (info "\r\n Handling valid url for" (get request :route) "...")
   (if (contains? #{"jpg" "gif" "png" "jpeg"} (get request :extension))
     (craft-get-response request true)
     (clojure.java.io/copy (craft-get-response request true) *out*)))
@@ -47,7 +48,6 @@
   (clojure.java.io/copy "HTTP/1.1 302\r\nLocation: http://localhost:5000/\r\n\r\n" *out*))
 
 (defn choose-response [request validity http-method]
-  (info "\r\n Determined request validity of" (get request :route) "to be" validity)
   (if (= true validity)
     (cond
       (= "/redirect" (get request :route))

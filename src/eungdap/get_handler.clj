@@ -8,6 +8,7 @@
                                           get-file-name
                                           get-file-size
                                           read-partial-file]]
+            [clojure.tools.logging :refer [info]]
             [clojure.string       :refer [split join]]))
 
 (defn add-header [code request content-length]
@@ -66,7 +67,11 @@
         (get-file-data (get-file-name file) file-extension)))))
 
 (defn write-image [code request file file-extension]
-    (.write *out* (concat-byte-array code request file file-extension)))
+  (let [file-byte-array (concat-byte-array code request file file-extension)]
+    (info "\r\n Created byte array" file-byte-array)
+    (info "\r\n Writing image" file "...")
+    (info "\r\n Replying with a status" code)
+    (.write *out* file-byte-array)))
 
 (defn split-range [range-string]
   (split (last (split range-string #"\=")) #"\-"))
@@ -81,6 +86,7 @@
         (read-partial-file file file-extension offset length)))))
 
 (defn make-binary-response [request code file file-extension]
+  (info "\r\n Replying with a status" code "for" file "\r\n\r\n---------------\r\n\r\n")
   (cond
     (contains? #{"jpg" "png" "jpeg" "gif"} file-extension)
       (write-image code request file file-extension)
