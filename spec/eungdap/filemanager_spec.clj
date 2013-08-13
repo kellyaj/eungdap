@@ -57,5 +57,8 @@
     (should= true
       (check-file-availability "pretzels.html")))
 
+  (it "returns false if a file is not in the file system"
+    (should= false
+      (check-file-availability "asdf.png")))
 
   )
