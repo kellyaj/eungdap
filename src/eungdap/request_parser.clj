@@ -1,8 +1,7 @@
 (ns eungdap.request-parser
   (:require [eungdap.route-manager :refer [method-allowed?]]
             [clojure.tools.logging :refer :all]
-            [clojure.string :refer [split]])
-  (:import java.io.PrintWriter))
+            [clojure.string :refer [split]]))
 
 (defn identify-file-extension [route]
   (if (= 1 (count (split route #"\.")))
