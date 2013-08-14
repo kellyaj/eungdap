@@ -18,18 +18,17 @@
   (-> file-or-directory java.io.File. .getAbsolutePath))
 
 (defn create-file-list [directory-name]
-    (into #{}
-          (for [file (-> directory-name java.io.File. .listFiles)]
-            (.getName file))))
+  (into #{}
+    (for [file (-> directory-name java.io.File. .listFiles)]
+      (.getName file))))
 
 (defn generate-directory-html [directory-name]
-  (.getBytes (apply str "<h1> Index of " directory-name "</h1>"
-       "<hr>"
-       (into []
-       (for [file (create-file-list directory-name)]
+  (.getBytes (apply str "<h1> Index of " directory-name "</h1>""<hr>"
+    (into []
+      (for [file (create-file-list directory-name)]
         (make-file-href (stringify-path directory-name) file))))))
 
-(defn deal-with-no-extension [file]
+(defn read-unextensioned [file]
   (if (.isFile (-> (str "public/" file) java.io.File. .getAbsoluteFile))
     (java.nio.file.Files/readAllBytes (Paths/get (.toURI (-> (str "public/" file) java.io.File. .getAbsoluteFile))))
     (java.nio.file.Files/readAllBytes (Paths/get (.toURI (-> (str "public/" file ".html") java.io.File. .getAbsoluteFile))))))
@@ -52,6 +51,6 @@
     (= true (-> (stringify-path file) java.io.File. .isDirectory))
       (generate-directory-html file)
     (= nil file-extension)
-      (deal-with-no-extension file)
+      (read-unextensioned file)
     :else
       (java.nio.file.Files/readAllBytes (Paths/get (.toURI (-> (str "public/" file) java.io.File. .getAbsoluteFile))))))

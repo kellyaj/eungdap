@@ -41,11 +41,11 @@
 
   (it "properly deals with a non-extension that should be .html"
     (should= "fake form"
-      (re-find #"fake form" (new String (deal-with-no-extension "/form")))))
+      (re-find #"fake form" (new String (read-unextensioned "/form")))))
 
   (it "properly deals with a non-extension that should be just plain file"
     (should="file1 contents"
-      (re-find #"file1 contents" (new String (deal-with-no-extension "/file1")))))
+      (re-find #"file1 contents" (new String (read-unextensioned "/file1")))))
 
   (it "reads a specific number of bytes for partial files"
     (should= 4
@@ -59,6 +59,4 @@
 
   (it "returns false if a file is not in the file system"
     (should= false
-      (check-file-availability "asdf.png")))
-
-  )
+      (check-file-availability "asdf.png"))))
