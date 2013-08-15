@@ -65,5 +65,5 @@
     (should="HTTP/1.1 206 Partial Content\r\nContent-Length: 4\r\nContent-Type: text/plain\r\nServer: Eungdap 0.1\r\n\r\nThis"
       (new String
            (partial-content-response
-             (hash-map :Range "bytes=0-4" :route "/partial_content.txt" :extension "txt") 
+             (hash-map :Range "bytes=0-4" :route "/partial_content.txt" :extension "txt")
              206 "partial_content.txt" "txt")))))

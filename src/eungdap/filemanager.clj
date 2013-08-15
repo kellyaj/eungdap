@@ -2,7 +2,6 @@
   (:import java.io.File java.nio.file.Paths java.io.ByteArrayOutputStream)
   (:require [clojure.string :refer [split]]))
 
-
 (defn get-file-name [request]
   (if (= request "/")
       "public"
@@ -42,7 +41,6 @@
     (.write outputstream
       (java.nio.file.Files/readAllBytes (Paths/get (.toURI (-> (str "public/" file) java.io.File. .getAbsoluteFile)))) offset length)
   (.toByteArray outputstream)))
-
 
 (defn get-file-data [file file-extension]
   (cond
